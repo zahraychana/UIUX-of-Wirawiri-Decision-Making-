@@ -1,0 +1,377 @@
+<svg width="1280" height="1604" viewBox="0 0 1280 1604" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Dashboard WiraWiri Suroboyo</title>
+<rect x="0" y="0" width="1280" height="1604" fill="url(#gradPage)"/>
+<g id="Sidebar">
+<rect x="0" y="0" width="260" height="1604" fill="url(#gradSide)"/>
+<circle cx="270" cy="120" r="150" fill="#FFFFFF" opacity="0.035"/>
+<circle cx="-40" cy="1444" r="190" fill="#FFFFFF" opacity="0.035"/>
+<g id="Logo_Dishub">
+<image x="24" y="28" width="72.7467" height="44" preserveAspectRatio="xMidYMid meet" xlink:href="data:image/png;base64,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"/>
+<line x1="110.747" y1="32" x2="110.747" y2="70" stroke="#3A6189" stroke-width="1"/>
+<text x="124.7" y="50.0" font-family="Poppins" font-size="18" font-weight="700" fill="#FFFFFF">Wira</text>
+<text x="168.8" y="50.0" font-family="Poppins" font-size="18" font-weight="700" fill="#A9C8EC">Wiri</text>
+<text x="124.7" y="67.0" font-family="Poppins" font-size="11" font-weight="400" fill="#B7CBE0">Feeder Suroboyo</text>
+</g>
+<line x1="24" y1="100" x2="236" y2="100" stroke="#2A5279" stroke-width="1"/>
+<text x="28.0" y="136.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#7FA0C2" letter-spacing="1.4">RINGKASAN</text>
+<rect x="16" y="150" width="228" height="44" rx="12" fill="#FFFFFF" opacity="0.13"/>
+<g transform="translate(32 162) scale(0.8333)" fill="none" stroke="#FFFFFF" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1" /> <rect width="7" height="5" x="14" y="3" rx="1" /> <rect width="7" height="9" x="14" y="12" rx="1" /> <rect width="7" height="5" x="3" y="16" rx="1" /></g>
+<text x="64.0" y="177.0" font-family="Poppins" font-size="13.5" font-weight="600" fill="#FFFFFF">Dashboard</text>
+<g transform="translate(32 212) scale(0.8333)" fill="none" stroke="#A9C8EC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" /> <path d="M15 5.764v15" /> <path d="M9 3.236v15" /></g>
+<text x="64.0" y="227.0" font-family="Poppins" font-size="13.5" font-weight="500" fill="#D3E0EE">Peta Rute</text>
+<text x="28.0" y="270.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#7FA0C2" letter-spacing="1.4">DATA</text>
+<g transform="translate(32 296) scale(0.8333)" fill="none" stroke="#A9C8EC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3" /> <path d="M3 5V19A9 3 0 0 0 21 19V5" /> <path d="M3 12A9 3 0 0 0 21 12" /></g>
+<text x="64.0" y="311.0" font-family="Poppins" font-size="13.5" font-weight="500" fill="#D3E0EE">Data Koridor</text>
+<text x="28.0" y="354.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#7FA0C2" letter-spacing="1.4">KEPUTUSAN</text>
+<g transform="translate(32 380) scale(0.8333)" fill="none" stroke="#A9C8EC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h11" /> <path d="M10 18h11" /> <path d="M10 6h11" /> <path d="M4 10h2" /> <path d="M4 6h1v4" /> <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" /></g>
+<text x="64.0" y="395.0" font-family="Poppins" font-size="13.5" font-weight="500" fill="#D3E0EE">Rekomendasi Armada</text>
+<text x="28.0" y="438.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#7FA0C2" letter-spacing="1.4">LAINNYA</text>
+<g transform="translate(32 464) scale(0.8333)" fill="none" stroke="#A9C8EC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z" /> <path d="M14 2v4a2 2 0 0 0 2 2h4" /> <path d="M10 9H8" /> <path d="M16 13H8" /> <path d="M16 17H8" /></g>
+<text x="64.0" y="479.0" font-family="Poppins" font-size="13.5" font-weight="500" fill="#D3E0EE">Laporan</text>
+<g transform="translate(32 514) scale(0.8333)" fill="none" stroke="#A9C8EC" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /> <circle cx="12" cy="12" r="3" /></g>
+<text x="64.0" y="529.0" font-family="Poppins" font-size="13.5" font-weight="500" fill="#D3E0EE">Pengaturan</text>
+<line x1="24" y1="1528" x2="236" y2="1528" stroke="#2A5279" stroke-width="1"/>
+<text x="28.0" y="1556.0" font-family="Poppins" font-size="11" font-weight="500" fill="#B7CBE0">Dinas Perhubungan Kota Surabaya</text>
+<text x="28.0" y="1574.0" font-family="Poppins" font-size="10.5" font-weight="400" fill="#7FA0C2">WiraWiri v3.0 · 2026</text>
+</g>
+<g id="Header">
+<rect x="260" y="0" width="1020" height="72" fill="#FFFFFF"/>
+<line x1="260" y1="72" x2="1280" y2="72" stroke="#E3E9F1" stroke-width="1"/>
+<rect x="292" y="16" width="300" height="40" rx="12" fill="#F4F7FC"/>
+<g transform="translate(308 28) scale(0.6667)" fill="none" stroke="#6A788A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8" /> <path d="m21 21-4.3-4.3" /></g>
+<text x="334.0" y="41.0" font-family="Poppins" font-size="13" font-weight="400" fill="#9AA8B8">Cari koridor, halte, atau armada…</text>
+<rect x="608" y="16" width="236" height="40" rx="12" fill="#FFFFFF" stroke="#E3E9F1" stroke-width="1"/>
+<g transform="translate(622 28) scale(0.6667)" fill="none" stroke="#2F64A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4" /> <path d="M16 2v4" /> <rect width="18" height="18" x="3" y="4" rx="2" /> <path d="M3 10h18" /></g>
+<text x="648.0" y="41.0" font-family="Poppins" font-size="13" font-weight="500" fill="#0F2D4E">Periode: November 2026</text>
+<g transform="translate(814 28) scale(0.6667)" fill="none" stroke="#6A788A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></g>
+<g transform="translate(1232 28) scale(0.6667)" fill="none" stroke="#6A788A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6" /></g>
+<circle cx="1044" cy="36" r="18" fill="url(#gradAvatar)"/>
+<text x="1038.2" y="41.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#FFFFFF">BI</text>
+<text x="1072.0" y="32.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">Bambang Irawan, S.T.</text>
+<text x="1072.0" y="49.0" font-family="Poppins" font-size="11" font-weight="400" fill="#6A788A">Transport Planner · Dishub</text>
+<line x1="1006" y1="22" x2="1006" y2="50" stroke="#E3E9F1" stroke-width="1"/>
+<g transform="translate(968 26) scale(0.8333)" fill="none" stroke="#0F2D4E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" /> <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" /></g>
+<circle cx="985" cy="28" r="4.5" fill="#C83A44" stroke="#FFFFFF" stroke-width="1.5"/>
+</g>
+<g id="Judul_Halaman">
+<text x="292.0" y="124.0" font-family="Poppins" font-size="28" font-weight="700" fill="#0F2D4E" letter-spacing="-0.3">Dashboard Operasional</text>
+<text x="292.0" y="150.0" font-family="Poppins" font-size="14" font-weight="400" fill="#6A788A">Ringkasan layanan feeder WiraWiri Suroboyo · Jumat, 20 November 2026</text>
+<rect x="1072.43" y="100" width="175.57" height="42" rx="12" fill="#FFFFFF" stroke="#E3E9F1" stroke-width="1"/>
+<g transform="translate(1090.43 113) scale(0.6667)" fill="none" stroke="#0F2D4E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /> <polyline points="7 10 12 15 17 10" /> <line x1="12" x2="12" y1="15" y2="3" /></g>
+<text x="1114.4" y="125.7" font-family="Poppins" font-size="13" font-weight="500" fill="#0F2D4E">Unduh Ringkasan</text>
+<g transform="translate(896.43 112) scale(0.5833)" fill="none" stroke="#6A788A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" /> <path d="M21 3v5h-5" /> <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" /> <path d="M8 16H3v5" /></g>
+<text x="916.4" y="124.0" font-family="Poppins" font-size="12" font-weight="500" fill="#6A788A">Diperbarui 06:15 WIB</text>
+</g>
+<g id="KPI_Penumpang_Hari_Ini">
+<g filter="url(#filter1_d)"><rect x="292" y="172" width="224" height="144" rx="18" fill="url(#gradKpi)"/></g>
+<circle cx="496" cy="190" r="60" fill="#FFFFFF" opacity="0.06"/>
+<circle cx="506" cy="316" r="40" fill="#FFFFFF" opacity="0.05"/>
+<circle cx="332" cy="212" r="20" fill="#FFFFFF" opacity="0.14"/>
+<g transform="translate(322 202) scale(0.8333)" fill="none" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /> <circle cx="9" cy="7" r="4" /> <path d="M22 21v-2a4 4 0 0 0-3-3.87" /> <path d="M16 3.13a4 4 0 0 1 0 7.75" /></g>
+<text x="364.0" y="208.0" font-family="Poppins" font-size="13" font-weight="500" fill="#D3E0EE">Penumpang Hari Ini</text>
+<text x="314.0" y="274.0" font-family="Poppins" font-size="30" font-weight="700" fill="#FFFFFF" letter-spacing="-0.4">2.090</text>
+<text x="401.6" y="274.0" font-family="Poppins" font-size="13" font-weight="500" fill="#B7CBE0">orang</text>
+<rect x="314" y="286" width="51.4475" height="20" rx="10.0" fill="#FFFFFF"/>
+<text x="324.0" y="299.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#0F2D4E">▲ 4,2%</text>
+<text x="373.4" y="300.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#B7CBE0">dari minggu lalu</text>
+</g>
+<g id="KPI_Armada_Beroperasi">
+<g filter="url(#filter2_d)"><rect x="536" y="172" width="224" height="144" rx="18" fill="#FFFFFF"/></g>
+<rect x="536.5" y="172.5" width="223" height="143" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<circle cx="576" cy="212" r="20" fill="#EAF1FA"/>
+<g transform="translate(566 202) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6" /> <path d="M15 6v6" /> <path d="M2 12h19.6" /> <path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3" /> <circle cx="7" cy="18" r="2" /> <path d="M9 18h5" /> <circle cx="16" cy="18" r="2" /></g>
+<text x="608.0" y="208.0" font-family="Poppins" font-size="13" font-weight="500" fill="#3E4C5C">Armada Beroperasi</text>
+<text x="558.0" y="274.0" font-family="Poppins" font-size="30" font-weight="700" fill="#0F2D4E" letter-spacing="-0.4">44/48</text>
+<text x="656.8" y="274.0" font-family="Poppins" font-size="13" font-weight="500" fill="#6A788A">unit</text>
+<text x="558.0" y="300.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">2 perawatan · 2 cadangan</text>
+</g>
+<g id="KPI_Rata-rata_Waktu_Tunggu">
+<g filter="url(#filter3_d)"><rect x="780" y="172" width="224" height="144" rx="18" fill="#FFFFFF"/></g>
+<rect x="780.5" y="172.5" width="223" height="143" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<circle cx="820" cy="212" r="20" fill="#EAF1FA"/>
+<g transform="translate(810 202) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /> <polyline points="12 6 12 12 16 14" /></g>
+<text x="852.0" y="208.0" font-family="Poppins" font-size="13" font-weight="500" fill="#3E4C5C">Rata-rata Waktu</text>
+<text x="852.0" y="225.0" font-family="Poppins" font-size="13" font-weight="500" fill="#3E4C5C">Tunggu</text>
+<text x="802.0" y="274.0" font-family="Poppins" font-size="30" font-weight="700" fill="#0F2D4E" letter-spacing="-0.4">23,6</text>
+<text x="869.5" y="274.0" font-family="Poppins" font-size="13" font-weight="500" fill="#6A788A">menit</text>
+<rect x="802" y="286" width="91.9775" height="20" rx="10.0" fill="#FCECEE"/>
+<text x="812.0" y="299.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#C83A44">Di atas target</text>
+<text x="902.0" y="300.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">≤ 15 menit</text>
+</g>
+<g id="KPI_Kepadatan_Rata-rata">
+<g filter="url(#filter4_d)"><rect x="1024" y="172" width="224" height="144" rx="18" fill="#FFFFFF"/></g>
+<rect x="1024.5" y="172.5" width="223" height="143" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<circle cx="1064" cy="212" r="20" fill="#EAF1FA"/>
+<g transform="translate(1054 202) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4" /> <path d="M3.34 19a10 10 0 1 1 17.32 0" /></g>
+<text x="1096.0" y="208.0" font-family="Poppins" font-size="13" font-weight="500" fill="#3E4C5C">Kepadatan</text>
+<text x="1096.0" y="225.0" font-family="Poppins" font-size="13" font-weight="500" fill="#3E4C5C">Rata-rata</text>
+<text x="1046.0" y="274.0" font-family="Poppins" font-size="30" font-weight="700" fill="#0F2D4E" letter-spacing="-0.4">80,4%</text>
+<text x="1144.6" y="274.0" font-family="Poppins" font-size="13" font-weight="500" fill="#6A788A"></text>
+<rect x="1046" y="286" width="51.4475" height="20" rx="10.0" fill="#FDF5E6"/>
+<text x="1056.0" y="299.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#A86F12">Padat</text>
+<text x="1105.4" y="300.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">ideal 70–75%</text>
+</g>
+<g id="Tren_Penumpang">
+<g filter="url(#filter5_d)"><rect x="292" y="340" width="600" height="340" rx="18" fill="#FFFFFF"/></g>
+<rect x="292.5" y="340.5" width="599" height="339" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<g transform="translate(316 362) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /> <polyline points="16 7 22 7 22 13" /></g>
+<text x="346.0" y="378.0" font-family="Poppins" font-size="16" font-weight="600" fill="#0F2D4E">Tren Penumpang Harian</text>
+<text x="346.0" y="397.0" font-family="Poppins" font-size="12" font-weight="400" fill="#6A788A">Rata-rata per hari, 8 minggu terakhir</text>
+</g>
+<rect x="746.622" y="366" width="121.377" height="22" rx="11.0" fill="#EAF1FA"/>
+<text x="756.6" y="380.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#1E4B78">▲ 17% sejak Oktober</text>
+<g id="Grafik_Tren">
+<line x1="360" y1="626" x2="860" y2="626" stroke="#EAF0F7" stroke-width="1"/>
+<text x="321.6" y="630.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#9AA8B8">1.600</text>
+<line x1="360" y1="565.333" x2="860" y2="565.333" stroke="#EAF0F7" stroke-width="1" stroke-dasharray="3 5"/>
+<text x="321.6" y="569.3" font-family="Poppins" font-size="10.5" font-weight="500" fill="#9AA8B8">1.800</text>
+<line x1="360" y1="504.667" x2="860" y2="504.667" stroke="#EAF0F7" stroke-width="1" stroke-dasharray="3 5"/>
+<text x="319.2" y="508.7" font-family="Poppins" font-size="10.5" font-weight="500" fill="#9AA8B8">2.000</text>
+<line x1="360" y1="444" x2="860" y2="444" stroke="#EAF0F7" stroke-width="1" stroke-dasharray="3 5"/>
+<text x="319.9" y="448.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#9AA8B8">2.200</text>
+<text x="362.3" y="650.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#6A788A">5 Okt</text>
+<text x="427.7" y="650.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#6A788A">12 Okt</text>
+<text x="494.2" y="650.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#6A788A">19 Okt</text>
+<text x="559.9" y="650.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#6A788A">26 Okt</text>
+<text x="628.9" y="650.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#6A788A">2 Nov</text>
+<text x="695.5" y="650.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#6A788A">9 Nov</text>
+<text x="760.4" y="650.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#6A788A">16 Nov</text>
+<text x="825.8" y="650.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#0F2D4E">Hari ini</text>
+<path d="M376.0 571.4 L442.9 559.3 L509.7 533.5 L576.6 547.1 L643.4 519.8 L710.3 501.6 L777.1 462.2 L844.0 477.4 L844.0 626 L376.0 626 Z" fill="url(#gradTren)"/>
+<path d="M376 571.4 L442.857 559.267 L509.714 533.483 L576.571 547.133 L643.429 519.833 L710.286 501.633 L777.143 462.2 L844 477.367" fill="none" stroke="url(#gradLine)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="376" cy="571.4" r="3.5" fill="#FFFFFF" stroke="#2F6FB2" stroke-width="2.5"/>
+<circle cx="442.857" cy="559.267" r="3.5" fill="#FFFFFF" stroke="#2F6FB2" stroke-width="2.5"/>
+<circle cx="509.714" cy="533.483" r="3.5" fill="#FFFFFF" stroke="#2F6FB2" stroke-width="2.5"/>
+<circle cx="576.571" cy="547.133" r="3.5" fill="#FFFFFF" stroke="#2F6FB2" stroke-width="2.5"/>
+<circle cx="643.429" cy="519.833" r="3.5" fill="#FFFFFF" stroke="#2F6FB2" stroke-width="2.5"/>
+<circle cx="710.286" cy="501.633" r="3.5" fill="#FFFFFF" stroke="#1E4B78" stroke-width="2.5"/>
+<circle cx="777.143" cy="462.2" r="5" fill="#FFFFFF" stroke="#1E4B78" stroke-width="2.5"/>
+<circle cx="844" cy="477.367" r="3.5" fill="#FFFFFF" stroke="#1E4B78" stroke-width="2.5"/>
+<line x1="777.143" y1="469.2" x2="777.143" y2="626" stroke="#2F64A0" stroke-width="1.2" stroke-dasharray="3 3"/>
+<rect x="723.143" y="418.2" width="108" height="30" rx="10" fill="#0F2D4E"/>
+<text x="737.8" y="438.2" font-family="Poppins" font-size="12" font-weight="600" fill="#FFFFFF">Puncak 2.140</text>
+</g>
+<g id="Penumpang_per_Koridor">
+<g filter="url(#filter6_d)"><rect x="912" y="340" width="336" height="340" rx="18" fill="#FFFFFF"/></g>
+<rect x="912.5" y="340.5" width="335" height="339" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<g transform="translate(936 362) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16" /> <path d="M18 17V9" /> <path d="M13 17V5" /> <path d="M8 17v-3" /></g>
+<text x="966.0" y="378.0" font-family="Poppins" font-size="16" font-weight="600" fill="#0F2D4E">Penumpang per Koridor</text>
+<text x="966.0" y="397.0" font-family="Poppins" font-size="12" font-weight="400" fill="#6A788A">Hari ini, diurutkan dari terbanyak</text>
+</g>
+<g id="Grafik_Koridor">
+<text x="936.0" y="440.0" font-family="Poppins" font-size="12.5" font-weight="700" fill="#0F2D4E">A4</text>
+<text x="964.0" y="440.0" font-family="Poppins" font-size="12" font-weight="500" fill="#3E4C5C">Bratang — Joyoboyo</text>
+<text x="1203.2" y="440.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">610</text>
+<rect x="936" y="449" width="288" height="8" rx="4.0" fill="#EEF3F9"/>
+<rect x="936" y="449" width="288" height="8" rx="4.0" fill="url(#gradBar)"/>
+<text x="936.0" y="477.0" font-family="Poppins" font-size="12.5" font-weight="700" fill="#0F2D4E">A1</text>
+<text x="964.0" y="477.0" font-family="Poppins" font-size="12" font-weight="500" fill="#3E4C5C">Benowo — TP</text>
+<text x="1200.6" y="477.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">520</text>
+<rect x="936" y="486" width="288" height="8" rx="4.0" fill="#EEF3F9"/>
+<rect x="936" y="486" width="245.508" height="8" rx="4.0" fill="url(#gradBar)"/>
+<text x="936.0" y="514.0" font-family="Poppins" font-size="12.5" font-weight="700" fill="#0F2D4E">A2</text>
+<text x="964.0" y="514.0" font-family="Poppins" font-size="12" font-weight="500" fill="#3E4C5C">Puspa Agro — DTC</text>
+<text x="1203.1" y="514.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">410</text>
+<rect x="936" y="523" width="288" height="8" rx="4.0" fill="#EEF3F9"/>
+<rect x="936" y="523" width="193.574" height="8" rx="4.0" fill="url(#gradBar)"/>
+<text x="936.0" y="551.0" font-family="Poppins" font-size="12.5" font-weight="700" fill="#0F2D4E">A3</text>
+<text x="964.0" y="551.0" font-family="Poppins" font-size="12" font-weight="500" fill="#3E4C5C">Sungkono — Kenjeran</text>
+<text x="1200.2" y="551.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">300</text>
+<rect x="936" y="560" width="288" height="8" rx="4.0" fill="#EEF3F9"/>
+<rect x="936" y="560" width="141.639" height="8" rx="4.0" fill="url(#gradBar)"/>
+<text x="936.0" y="588.0" font-family="Poppins" font-size="12.5" font-weight="700" fill="#0F2D4E">A5</text>
+<text x="964.0" y="588.0" font-family="Poppins" font-size="12" font-weight="500" fill="#3E4C5C">Joyoboyo — Lakarsantri</text>
+<text x="1200.6" y="588.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">250</text>
+<rect x="936" y="597" width="288" height="8" rx="4.0" fill="#EEF3F9"/>
+<rect x="936" y="597" width="118.033" height="8" rx="4.0" fill="url(#gradBar)"/>
+<rect x="932" y="618" width="296" height="42" rx="12" fill="#EEF4FB"/>
+<g transform="translate(944 630) scale(0.7500)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /> <path d="M12 16v-4" /> <path d="M12 8h.01" /></g>
+<text x="970.0" y="644.0" font-family="Poppins" font-size="12" font-weight="500" fill="#1E4B78">A4 melayani 29% penumpang harian</text>
+</g>
+<g id="Tabel_Kinerja_Koridor">
+<g filter="url(#filter7_d)"><rect x="292" y="704" width="956" height="444" rx="18" fill="#FFFFFF"/></g>
+<rect x="292.5" y="704.5" width="955" height="443" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<g transform="translate(316 726) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" /></g>
+<text x="346.0" y="742.0" font-family="Poppins" font-size="16" font-weight="600" fill="#0F2D4E">Kinerja Koridor Hari Ini</text>
+<text x="346.0" y="761.0" font-family="Poppins" font-size="12" font-weight="400" fill="#6A788A">Dibandingkan standar pelayanan minimal (SPM) Dishub</text>
+</g>
+<text x="1088.0" y="748.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#2F64A0">Lihat Data Koridor</text>
+<g transform="translate(1208 736) scale(0.6667)" fill="none" stroke="#2F64A0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></g>
+<g id="Isi_Tabel">
+<rect x="292" y="796" width="956" height="44" fill="#F4F7FC"/>
+<line x1="292" y1="840" x2="1248" y2="840" stroke="#E3E9F1" stroke-width="1"/>
+<text x="308.0" y="822.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#5B6B80" letter-spacing="0.5">KODE</text>
+<text x="372.0" y="822.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#5B6B80" letter-spacing="0.5">KORIDOR</text>
+<text x="562.3" y="822.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#5B6B80" letter-spacing="0.5">ARMADA AKTIF</text>
+<text x="665.8" y="822.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#5B6B80" letter-spacing="0.5">PENUMPANG</text>
+<text x="768.0" y="822.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#5B6B80" letter-spacing="0.5">KEPADATAN</text>
+<text x="928.0" y="822.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#5B6B80" letter-spacing="0.5">WAKTU TUNGGU</text>
+<text x="1034.3" y="822.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#5B6B80" letter-spacing="0.5">TEPAT WAKTU</text>
+<text x="1144.0" y="822.0" font-family="Poppins" font-size="10.5" font-weight="600" fill="#5B6B80" letter-spacing="0.5">STATUS</text>
+<text x="310.0" y="875.0" font-family="Poppins" font-size="14" font-weight="700" fill="#0F2D4E">A1</text>
+<text x="372.0" y="867.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">Benowo — TP</text>
+<text x="372.0" y="884.0" font-family="Poppins" font-size="11" font-weight="400" fill="#6A788A">Koridor Barat – Pusat</text>
+<text x="586.7" y="874.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">9 / 10</text>
+<text x="711.9" y="874.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">520</text>
+<rect x="768" y="867" width="80" height="7" rx="3.5" fill="#F1F5FA"/>
+<rect x="768" y="867" width="73.6" height="7" rx="3.5" fill="#C83A44"/>
+<text x="858.0" y="874.5" font-family="Poppins" font-size="13" font-weight="600" fill="#C83A44">92%</text>
+<text x="928.0" y="868.0" font-family="Poppins" font-size="13" font-weight="600" fill="#C83A44">25 menit</text>
+<text x="928.0" y="884.0" font-family="Poppins" font-size="10.5" font-weight="400" fill="#9AA8B8">target ≤ 15</text>
+<text x="1086.0" y="874.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">82%</text>
+<rect x="1140" y="859" width="57.83" height="22" rx="11.0" fill="#FCECEE"/>
+<circle cx="1153" cy="870" r="3" fill="#C83A44"/>
+<text x="1162.0" y="873.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#C83A44">Kritis</text>
+<line x1="292" y1="900" x2="1248" y2="900" stroke="#EDF1F6" stroke-width="1"/>
+<text x="310.0" y="935.0" font-family="Poppins" font-size="14" font-weight="700" fill="#0F2D4E">A2</text>
+<text x="372.0" y="927.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">Puspa Agro — DTC</text>
+<text x="372.0" y="944.0" font-family="Poppins" font-size="11" font-weight="400" fill="#6A788A">Koridor Sidoarjo – Selatan</text>
+<text x="589.0" y="934.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">8 / 8</text>
+<text x="714.7" y="934.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">410</text>
+<rect x="768" y="927" width="80" height="7" rx="3.5" fill="#F1F5FA"/>
+<rect x="768" y="927" width="68" height="7" rx="3.5" fill="#E2A23B"/>
+<text x="858.0" y="934.5" font-family="Poppins" font-size="13" font-weight="600" fill="#A86F12">85%</text>
+<text x="928.0" y="928.0" font-family="Poppins" font-size="13" font-weight="600" fill="#A86F12">20 menit</text>
+<text x="928.0" y="944.0" font-family="Poppins" font-size="10.5" font-weight="400" fill="#9AA8B8">target ≤ 15</text>
+<text x="1085.2" y="934.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">88%</text>
+<rect x="1140" y="919" width="83.6075" height="22" rx="11.0" fill="#FDF5E6"/>
+<circle cx="1153" cy="930" r="3" fill="#A86F12"/>
+<text x="1162.0" y="933.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#A86F12">Waspada</text>
+<line x1="292" y1="960" x2="1248" y2="960" stroke="#EDF1F6" stroke-width="1"/>
+<text x="310.0" y="995.0" font-family="Poppins" font-size="14" font-weight="700" fill="#0F2D4E">A3</text>
+<text x="372.0" y="987.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">Sungkono — Kenjeran</text>
+<text x="372.0" y="1004.0" font-family="Poppins" font-size="11" font-weight="400" fill="#6A788A">Koridor Timur – Barat</text>
+<text x="589.0" y="994.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">8 / 9</text>
+<text x="711.6" y="994.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">300</text>
+<rect x="768" y="987" width="80" height="7" rx="3.5" fill="#F1F5FA"/>
+<rect x="768" y="987" width="56" height="7" rx="3.5" fill="#2F8F5B"/>
+<text x="858.0" y="994.5" font-family="Poppins" font-size="13" font-weight="600" fill="#2F8F5B">70%</text>
+<text x="928.0" y="988.0" font-family="Poppins" font-size="13" font-weight="600" fill="#C83A44">30 menit</text>
+<text x="928.0" y="1004.0" font-family="Poppins" font-size="10.5" font-weight="400" fill="#9AA8B8">target ≤ 15</text>
+<text x="1086.3" y="994.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">79%</text>
+<rect x="1140" y="979" width="57.83" height="22" rx="11.0" fill="#FCECEE"/>
+<circle cx="1153" cy="990" r="3" fill="#C83A44"/>
+<text x="1162.0" y="993.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#C83A44">Kritis</text>
+<line x1="292" y1="1020" x2="1248" y2="1020" stroke="#EDF1F6" stroke-width="1"/>
+<text x="310.0" y="1055.0" font-family="Poppins" font-size="14" font-weight="700" fill="#0F2D4E">A4</text>
+<text x="372.0" y="1047.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">Bratang — Joyoboyo</text>
+<text x="372.0" y="1064.0" font-family="Poppins" font-size="11" font-weight="400" fill="#6A788A">Koridor Intermoda Pusat</text>
+<text x="586.7" y="1054.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">11 / 12</text>
+<text x="714.8" y="1054.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">610</text>
+<rect x="768" y="1047" width="80" height="7" rx="3.5" fill="#F1F5FA"/>
+<rect x="768" y="1047" width="76" height="7" rx="3.5" fill="#C83A44"/>
+<text x="858.0" y="1054.5" font-family="Poppins" font-size="13" font-weight="600" fill="#C83A44">95%</text>
+<text x="928.0" y="1048.0" font-family="Poppins" font-size="13" font-weight="600" fill="#C83A44">28 menit</text>
+<text x="928.0" y="1064.0" font-family="Poppins" font-size="10.5" font-weight="400" fill="#9AA8B8">target ≤ 15</text>
+<text x="1086.1" y="1054.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">76%</text>
+<rect x="1140" y="1039" width="57.83" height="22" rx="11.0" fill="#FCECEE"/>
+<circle cx="1153" cy="1050" r="3" fill="#C83A44"/>
+<text x="1162.0" y="1053.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#C83A44">Kritis</text>
+<line x1="292" y1="1080" x2="1248" y2="1080" stroke="#EDF1F6" stroke-width="1"/>
+<text x="310.0" y="1115.0" font-family="Poppins" font-size="14" font-weight="700" fill="#0F2D4E">A5</text>
+<text x="372.0" y="1107.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">Joyoboyo — Lakarsantri</text>
+<text x="372.0" y="1124.0" font-family="Poppins" font-size="11" font-weight="400" fill="#6A788A">Koridor Barat Daya</text>
+<text x="589.0" y="1114.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">8 / 9</text>
+<text x="711.9" y="1114.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">250</text>
+<rect x="768" y="1107" width="80" height="7" rx="3.5" fill="#F1F5FA"/>
+<rect x="768" y="1107" width="48" height="7" rx="3.5" fill="#2F8F5B"/>
+<text x="858.0" y="1114.5" font-family="Poppins" font-size="13" font-weight="600" fill="#2F8F5B">60%</text>
+<text x="928.0" y="1108.0" font-family="Poppins" font-size="13" font-weight="600" fill="#2F8F5B">15 menit</text>
+<text x="928.0" y="1124.0" font-family="Poppins" font-size="10.5" font-weight="400" fill="#9AA8B8">target ≤ 15</text>
+<text x="1085.2" y="1114.7" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">94%</text>
+<rect x="1140" y="1099" width="71.1125" height="22" rx="11.0" fill="#E8F5EE"/>
+<circle cx="1153" cy="1110" r="3" fill="#2F8F5B"/>
+<text x="1162.0" y="1113.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#2F8F5B">Normal</text>
+</g>
+<g id="Peringatan_Operasional">
+<g filter="url(#filter8_d)"><rect x="292" y="1172" width="305.333" height="384" rx="18" fill="#FFFFFF"/></g>
+<rect x="292.5" y="1172.5" width="304.333" height="383" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<g transform="translate(316 1194) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" /> <path d="M12 9v4" /> <path d="M12 17h.01" /></g>
+<text x="346.0" y="1210.0" font-family="Poppins" font-size="16" font-weight="600" fill="#0F2D4E">Peringatan Operasional</text>
+<text x="346.0" y="1229.0" font-family="Poppins" font-size="12" font-weight="400" fill="#6A788A">Hari ini</text>
+</g>
+<g id="Daftar_Peringatan">
+<circle cx="322" cy="1256" r="4" fill="#C83A44"/>
+<text x="336.0" y="1260.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">A4 penuh 95% di jam sibuk</text>
+<text x="544.0" y="1260.0" font-family="Poppins" font-size="11" font-weight="500" fill="#9AA8B8">07:42</text>
+<text x="336.0" y="1279.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">Pukul 06.30–08.30 penumpang</text>
+<text x="336.0" y="1296.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">tertinggal di Halte St. Gubeng.</text>
+<line x1="316" y1="1310" x2="573.333" y2="1310" stroke="#EDF1F6" stroke-width="1"/>
+<circle cx="322" cy="1322" r="4" fill="#C83A44"/>
+<text x="336.0" y="1326.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">A3 menunggu 30 menit</text>
+<text x="546.5" y="1326.0" font-family="Poppins" font-size="11" font-weight="500" fill="#9AA8B8">07:15</text>
+<text x="336.0" y="1345.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">Dua kali lipat target SPM 15 menit.</text>
+<line x1="316" y1="1359" x2="573.333" y2="1359" stroke="#EDF1F6" stroke-width="1"/>
+<circle cx="322" cy="1371" r="4" fill="#A86F12"/>
+<text x="336.0" y="1375.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">FD-04-07 masuk bengkel</text>
+<text x="542.5" y="1375.0" font-family="Poppins" font-size="11" font-weight="500" fill="#9AA8B8">06:50</text>
+<text x="336.0" y="1394.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">Servis rem, estimasi kembali 22</text>
+<text x="336.0" y="1411.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">November.</text>
+<line x1="316" y1="1425" x2="573.333" y2="1425" stroke="#EDF1F6" stroke-width="1"/>
+<circle cx="322" cy="1437" r="4" fill="#2F8F5B"/>
+<text x="336.0" y="1441.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1B2A3A">Pelacakan GPS normal</text>
+<text x="545.7" y="1441.0" font-family="Poppins" font-size="11" font-weight="500" fill="#9AA8B8">06:15</text>
+<text x="336.0" y="1460.0" font-family="Poppins" font-size="11.5" font-weight="400" fill="#6A788A">Seluruh unit aktif terpantau 5 menit lalu.</text>
+</g>
+<g id="Keluhan_Warga">
+<g filter="url(#filter9_d)"><rect x="617.333" y="1172" width="305.333" height="384" rx="18" fill="#FFFFFF"/></g>
+<rect x="617.833" y="1172.5" width="304.333" height="383" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<g transform="translate(641.333 1194) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /> <path d="M12 7v2" /> <path d="M12 13h.01" /></g>
+<text x="671.3" y="1210.0" font-family="Poppins" font-size="16" font-weight="600" fill="#0F2D4E">Keluhan Warga</text>
+<text x="671.3" y="1229.0" font-family="Poppins" font-size="12" font-weight="400" fill="#6A788A">Bulan November 2026</text>
+</g>
+<g id="Ringkasan_Keluhan">
+<text x="641.3" y="1294.0" font-family="Poppins" font-size="36" font-weight="700" fill="#0F2D4E">81</text>
+<text x="686.2" y="1294.0" font-family="Poppins" font-size="13" font-weight="500" fill="#6A788A">laporan</text>
+<rect x="792.199" y="1272" width="106.468" height="22" rx="11.0" fill="#FCECEE"/>
+<text x="802.2" y="1286.8" font-family="Poppins" font-size="10.5" font-weight="500" fill="#C83A44">▲ 12 dari Oktober</text>
+<text x="641.3" y="1334.0" font-family="Poppins" font-size="12.5" font-weight="500" fill="#3E4C5C">Armada penuh</text>
+<text x="882.9" y="1334.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">34</text>
+<rect x="641.333" y="1344" width="257.333" height="6" rx="3.0" fill="#F1F5FA"/>
+<rect x="641.333" y="1344" width="257.333" height="6" rx="3.0" fill="#1E4B78"/>
+<text x="641.3" y="1380.0" font-family="Poppins" font-size="12.5" font-weight="500" fill="#3E4C5C">Menunggu terlalu lama</text>
+<text x="884.7" y="1380.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">27</text>
+<rect x="641.333" y="1390" width="257.333" height="6" rx="3.0" fill="#F1F5FA"/>
+<rect x="641.333" y="1390" width="204.353" height="6" rx="3.0" fill="#2F64A0"/>
+<text x="641.3" y="1426.0" font-family="Poppins" font-size="12.5" font-weight="500" fill="#3E4C5C">Pelayanan pengemudi</text>
+<text x="886.9" y="1426.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">12</text>
+<rect x="641.333" y="1436" width="257.333" height="6" rx="3.0" fill="#F1F5FA"/>
+<rect x="641.333" y="1436" width="90.8235" height="6" rx="3.0" fill="#6C97C9"/>
+<text x="641.3" y="1472.0" font-family="Poppins" font-size="12.5" font-weight="500" fill="#3E4C5C">Kebersihan unit</text>
+<text x="890.6" y="1472.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#0F2D4E">8</text>
+<rect x="641.333" y="1482" width="257.333" height="6" rx="3.0" fill="#F1F5FA"/>
+<rect x="641.333" y="1482" width="60.549" height="6" rx="3.0" fill="#A9C8EC"/>
+<text x="641.3" y="1532.0" font-family="Poppins" font-size="10.5" font-weight="400" fill="#9AA8B8">Sumber: kanal WargaKu &amp; petugas halte</text>
+</g>
+<g id="Rekomendasi_Armada">
+<g filter="url(#filter10_d)"><rect x="942.667" y="1172" width="305.333" height="384" rx="18" fill="#FFFFFF"/></g>
+<rect x="943.167" y="1172.5" width="304.333" height="383" rx="17.5" fill="none" stroke="#E6ECF4" stroke-width="1"/>
+<g transform="translate(966.667 1194) scale(0.8333)" fill="none" stroke="#2F64A0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h11" /> <path d="M10 18h11" /> <path d="M10 6h11" /> <path d="M4 10h2" /> <path d="M4 6h1v4" /> <path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1" /></g>
+<text x="996.7" y="1210.0" font-family="Poppins" font-size="16" font-weight="600" fill="#0F2D4E">Rekomendasi Armada</text>
+<text x="996.7" y="1229.0" font-family="Poppins" font-size="12" font-weight="400" fill="#6A788A">Diperbarui otomatis · November 2026</text>
+</g>
+<g id="Ringkasan_Rekomendasi">
+<rect x="962.667" y="1254" width="265.333" height="118" rx="14" fill="url(#gradRek)"/>
+<circle cx="1214" cy="1264" r="46" fill="#FFFFFF" opacity="0.06"/>
+<text x="978.7" y="1280.0" font-family="Poppins" font-size="10" font-weight="600" fill="#A9C8EC" letter-spacing="1.2">PRIORITAS UTAMA</text>
+<text x="978.7" y="1304.0" font-family="Poppins" font-size="14" font-weight="600" fill="#FFFFFF">A4 · Bratang — Joyoboyo</text>
+<text x="978.7" y="1350.0" font-family="Poppins" font-size="26" font-weight="700" fill="#FFFFFF">+4 unit</text>
+<text x="1153.4" y="1332.0" font-family="Poppins" font-size="10.5" font-weight="500" fill="#B7CBE0">Kebutuhan</text>
+<text x="1162.2" y="1352.0" font-family="Poppins" font-size="15" font-weight="600" fill="#FFFFFF">97/100</text>
+<text x="966.7" y="1408.0" font-family="Poppins" font-size="13" font-weight="700" fill="#2F64A0">2</text>
+<text x="988.7" y="1408.0" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">A1 · Benowo — TP</text>
+<text x="1178.8" y="1408.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1E4B78">+2 unit</text>
+<text x="988.7" y="1425.0" font-family="Poppins" font-size="11" font-weight="400" fill="#6A788A">Kebutuhan 87/100</text>
+<text x="966.7" y="1452.0" font-family="Poppins" font-size="13" font-weight="700" fill="#2F64A0">3</text>
+<text x="988.7" y="1452.0" font-family="Poppins" font-size="13" font-weight="500" fill="#1B2A3A">A3 · Sungkono — Kenjeran</text>
+<text x="1181.6" y="1452.0" font-family="Poppins" font-size="13" font-weight="600" fill="#1E4B78">+1 unit</text>
+<text x="988.7" y="1469.0" font-family="Poppins" font-size="11" font-weight="400" fill="#6A788A">Kebutuhan 75/100</text>
+<line x1="966.667" y1="1480" x2="1224" y2="1480" stroke="#E3E9F1" stroke-width="1"/>
+<text x="966.7" y="1502.0" font-family="Poppins" font-size="12" font-weight="500" fill="#6A788A">Total usulan</text>
+<text x="1181.2" y="1502.0" font-family="Poppins" font-size="12.5" font-weight="700" fill="#0F2D4E">+7 unit</text>
+<rect x="966.667" y="1512" width="257.333" height="30" rx="10" fill="#EAF1FA"/>
+<text x="1024.7" y="1532.0" font-family="Poppins" font-size="12.5" font-weight="600" fill="#1E4B78">Lihat Rekomendasi</text>
+<g transform="translate(1151.93 1519) scale(0.6667)" fill="none" stroke="#1E4B78" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14" /> <path d="m12 5 7 7-7 7" /></g>
+</g>
+<defs><linearGradient id="gradPage" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7FAFE"/><stop offset="1" stop-color="#EBF1F9"/></linearGradient><linearGradient id="gradSide" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0C2744"/><stop offset="0.55" stop-color="#123A63"/><stop offset="1" stop-color="#174673"/></linearGradient><linearGradient id="gradAvatar" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F64A0"/><stop offset="1" stop-color="#0F2D4E"/></linearGradient><filter id="filter1_d" x="256" y="144" width="296" height="216" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="8"/><feGaussianBlur stdDeviation="9"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.18 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><linearGradient id="gradKpi" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2F64A0"/><stop offset="1" stop-color="#0F2D4E"/></linearGradient><filter id="filter2_d" x="516" y="156" width="264" height="184" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><filter id="filter3_d" x="760" y="156" width="264" height="184" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><filter id="filter4_d" x="1004" y="156" width="264" height="184" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><filter id="filter5_d" x="272" y="324" width="640" height="380" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><linearGradient id="gradTren" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F6FB2" stop-opacity="0.26"/><stop offset="1" stop-color="#2F6FB2" stop-opacity="0"/></linearGradient><linearGradient id="gradLine" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A9C8EC"/><stop offset="1" stop-color="#1E4B78"/></linearGradient><filter id="filter6_d" x="892" y="324" width="376" height="380" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><linearGradient id="gradBar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A9C8EC"/><stop offset="1" stop-color="#2F64A0"/></linearGradient><filter id="filter7_d" x="272" y="688" width="996" height="484" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><filter id="filter8_d" x="272" y="1156" width="345.333" height="424" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><filter id="filter9_d" x="597.333" y="1156" width="345.333" height="424" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><filter id="filter10_d" x="922.667" y="1156" width="345.333" height="424" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="4"/><feGaussianBlur stdDeviation="5"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0.06 0 0 0 0 0.18 0 0 0 0 0.31 0 0 0 0.07 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/></filter><linearGradient id="gradRek" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1E4B78"/><stop offset="1" stop-color="#0F2D4E"/></linearGradient></defs>
+</svg>

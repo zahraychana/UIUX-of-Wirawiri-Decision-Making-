@@ -1,0 +1,7 @@
+scenario,description,ranking,V_A4,score_A3,category_A3,score_A2,category_A2,gap_rank3_rank4
+S0,Base weights,A4 > A1 > A3 > A2 > A5,0.9667,75,Perlu,70,Pantau,0.0513
+S1,Equal weights (1/6),A4 > A1 > A3 > A2 > A5,0.9556,77,Perlu,70,Pantau,0.0747
+S2,C1 raised to 0.35,A4 > A1 > A3 > A2 > A5,0.9711,72,Perlu,70,Pantau,0.0205
+S3,C3 raised to 0.30,A4 > A1 > A3 > A2 > A5,0.9625,78,Perlu,69,Pantau,0.0866
+S4,C4 removed (0),A4 > A1 > A3 > A2 > A5,0.9608,74,Perlu,74,Perlu,0.0039
+S5,C5 raised to 0.20,A4 > A1 > A3 > A2 > A5,0.9481,78,Perlu,70,Pantau,0.0827

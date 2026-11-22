@@ -1,0 +1,14 @@
+# Local originals kept outside version control (pre-revision report, raw exports)
+_original/
+
+# Office lock and temp files
+~$*
+
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
