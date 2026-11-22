@@ -84,10 +84,10 @@ The full log, with the alternatives considered and the reasoning, is in [docs/de
 
 | | |
 |---|---|
-| ![Login](design/screens/00-login.png) **Login**: split layout, staff-only access with official email or NIP | ![Dashboard](design/screens/01-dashboard.png) **Dashboard**: KPIs with targets, 8-week trend, corridor performance vs. service standard, alerts, recommendation preview |
+| ![Login](design/screens/00-login.png) **Login**: animated intro (the bus pulls up onto the route map), staff-only access with official email or NIP, show/hide password | ![Dashboard](design/screens/01-dashboard.png) **Dashboard**: KPIs with targets, 8-week trend, corridor performance vs. service standard, alerts, recommendation preview |
 | ![Dashboard slide-over: corridor data](design/screens/01a-dashboard-slide-data-koridor.png) **Slide-over: corridor data**: six criteria per corridor without leaving the Dashboard | ![Dashboard slide-over: recommendation](design/screens/01b-dashboard-slide-rekomendasi-armada.png) **Slide-over: recommendation**: ranking and expected impact |
 | ![Peta Rute](design/screens/02-peta-rute.png) **Peta Rute**: schematic map coloured by service status, with segment filters | ![Data Koridor](design/screens/03-data-koridor.png) **Data Koridor**: master data; six columns are the SAW decision matrix |
-| ![Tambah Koridor](design/screens/03a-tambah-koridor.png) **Add corridor**: three-step form, auto-fill from the route file, required-field markers, save as draft | ![Rekomendasi Armada](design/screens/04-rekomendasi-armada.png) **Rekomendasi Armada**: the core of the DSS, with conclusion, ranking, reasons, weights and expected impact |
+| ![Tambah Koridor](design/screens/03a-tambah-koridor.png) **Add corridor**: three-step form, auto-fill from the route file, required-field markers | ![Rekomendasi Armada](design/screens/04-rekomendasi-armada.png) **Rekomendasi Armada**: the core of the DSS, with conclusion, ranking, reasons, weights and expected impact |
 | ![Laporan](design/screens/05-laporan.png) **Laporan**: official decision sheet ready for approval, PDF/Excel export | ![Semua Arsip](design/screens/05a-laporan-semua-arsip.png) **Archive**: all decision documents with status and type filters |
 | ![Pengaturan](design/screens/06-pengaturan.png) **Pengaturan**: weight sliders with live result preview, service thresholds, score categories, data sources | |
 
@@ -196,7 +196,7 @@ The design was inspected against Nielsen's 10 usability heuristics. **6 are full
 | Primary colours | Navy `#0F2D4E`, blue `#2F64A0`, text `#1B2A3A`, background `#F1F5FA` |
 | Status colours | Red `#C83A44` Kritis, amber `#E2A23B` Waspada, green `#2F8F5B` Normal |
 | Typography | Poppins: page title 28 px bold, card title 16 px, body 13–14 px |
-| Components | KPI card, status chip, data table, progress bar, button, segmented filter, slide-over panel, modal form |
+| Components | KPI card, status chip, data table, progress bar, button, segmented filter, slide-over panel, modal form, checkbox and password-visibility toggle (with state variants) |
 | Layout | 1280 px frame, 260 px sidebar, 72 px header, card-based content |
 
 ## Repository structure
@@ -209,7 +209,7 @@ The design was inspected against Nielsen's 10 usability heuristics. **6 are full
 │   └── hero.png
 ├── design/
 │   ├── screens/                  PNG exports of every screen (2x)
-│   └── svg/                      source SVGs
+│   └── svg/                      source SVGs (text outlined; Login has two animation frames)
 ├── analysis/
 │   ├── saw.py                    reproducible SAW and sensitivity analysis
 │   ├── saw_model.xlsx            the same model with live Excel formulas
