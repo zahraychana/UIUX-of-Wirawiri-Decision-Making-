@@ -4,7 +4,7 @@
 
 **Tujuan:** Membangun website WiraWiri yang berjalan dan di-hosting: tampilan sesuai Figma, SAW dihitung di backend, ada tiga peran, kelola data, dan alur laporan sampai PDF.
 
-**Arsitektur:** Satu aplikasi Next.js di `web/`. Halaman server membaca data lewat service. Semua perubahan data dari browser lewat REST `/api/v1/*`. Service memanggil domain murni (`src/domain`) dan Drizzle ke Postgres. Reset demo harian dijalankan oleh Vercel Cron.
+**Arsitektur:** Satu aplikasi Next.js di `src/`. Halaman server membaca data lewat service. Semua perubahan data dari browser lewat REST `/api/v1/*`. Service memanggil domain murni (`src/domain`) dan Drizzle ke Postgres. Reset demo harian dijalankan oleh Vercel Cron.
 
 **Tech stack** (versi stabil saat rencana ditulis, dikunci di Task 1):
 - Next.js 16 (App Router), React 19, TypeScript strict
@@ -18,7 +18,8 @@
 
 ## Batasan Global
 
-- **Kode dan branch:** semua kode ada di `web/`. Kerjakan di branch `feat/web-app` di repo `zahraychana/UIUX-of-Wirawiri-Decision-Making-` dan push di akhir setiap fase. Merge ke `main` hanya di Task 24. Tidak ada repo baru.
+- **Lokasi dan perintah:** seluruh kode website ada di folder `src/` di root repo (satu proyek Next.js; `package.json` ada di `src/`). Semua path di rencana ini relatif terhadap root repo, dan semua perintah `npm`/`npx` dijalankan dari dalam `src/`. Alias impor `@/*` menunjuk ke `src/`.
+- **Kode dan branch:** semua kode ada di `src/`. Kerjakan di branch `feat/web-app` di repo `zahraychana/UIUX-of-Wirawiri-Decision-Making-` dan push di akhir setiap fase. Merge ke `main` hanya di Task 24. Tidak ada repo baru.
 - **Konvensi Next 16:**
   - Penjaga rute ada di `src/proxy.ts` (pengganti `middleware.ts`).
   - `params` di route handler berbentuk `Promise`.
@@ -84,13 +85,13 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 
 ## Fase 1: Fondasi
 
-### Task 1: Scaffold `web/`, tooling, dan database lokal
+### Task 1: Scaffold `src/`, tooling, dan database lokal
 
 **File:**
-- Buat: `web/` (create-next-app: TypeScript, Tailwind, ESLint, App Router, `src/`, alias `@/*`)
-- Buat: `web/docker-compose.yml`, `web/.env.example`, `web/vitest.config.ts`, `web/playwright.config.ts`
-- Buat: `web/src/lib/env.ts`
-- Tes: `web/tests/unit/env.test.ts`
+- Buat: `src/` (create-next-app: TypeScript, Tailwind, ESLint, App Router, tanpa src-dir, alias `@/*` → `src/`)
+- Buat: `src/docker-compose.yml`, `src/.env.example`, `src/vitest.config.ts`, `src/playwright.config.ts`
+- Buat: `src/lib/env.ts`
+- Tes: `src/tests/unit/env.test.ts`
 
 **Antarmuka:**
 - Menghasilkan:
@@ -107,10 +108,10 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
     | `test:e2e` | Playwright |
     | `db:generate`, `db:migrate`, `db:seed` | Drizzle dan seed |
 
-- [ ] **Langkah 1:** buat branch `git checkout -b feat/web-app`, lalu jalankan `npx create-next-app@latest web --ts --tailwind --eslint --app --src-dir --import-alias "@/*" --use-npm`.
-- [ ] **Langkah 2:** pasang dependensi dari Tech Stack, plus `tsx` dan `@types/papaparse`. Catat versi terpasang di `web/README.md` bagian "Stack".
+- [ ] **Langkah 1:** buat branch `git checkout -b feat/web-app`, lalu jalankan `npx create-next-app@latest src --ts --tailwind --eslint --app --no-src-dir --import-alias "@/*" --use-npm` dari root repo.
+- [ ] **Langkah 2:** pasang dependensi dari Tech Stack, plus `tsx` dan `@types/papaparse`. Catat versi terpasang di `src/README.md` bagian "Stack".
 - [ ] **Langkah 3:** `docker-compose.yml` berisi layanan `db` (postgres:16, port host `54329`) dengan dua database: `wirawiri` dan `wirawiri_test`. Contoh di `.env.example`: `DATABASE_URL=postgres://postgres:postgres@localhost:54329/wirawiri`.
-- [ ] **Langkah 4:** Vitest dengan dua project. `unit` mencakup `src/**/*.test.ts` dan `tests/unit/**`, environment node. `integration` mencakup `tests/integration/**`, `fileParallelism: false`, dan memakai `DATABASE_URL_TEST`.
+- [ ] **Langkah 4:** Vitest dengan dua project. `unit` mencakup `domain/**/*.test.ts`, `lib/**/*.test.ts`, dan `tests/unit/**`, environment node. `integration` mencakup `tests/integration/**`, `fileParallelism: false`, dan memakai `DATABASE_URL_TEST`.
 - [ ] **Langkah 5:** tulis tes gagal `env.test.ts`. `parseEnv({})` harus melempar error yang menyebut `DATABASE_URL`, dan `parseEnv(valid)` mengembalikan objek.
 - [ ] **Langkah 6:** implementasikan `parseEnv(source: Record<string,string|undefined>)` dan `export const env = parseEnv(process.env)`.
 - [ ] **Langkah 7:** `npm run test:unit` PASS, `npm run typecheck` tanpa error, `docker compose up -d` dan `npm run build` berhasil.
@@ -119,8 +120,8 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 2: Mesin SAW inti
 
 **File:**
-- Buat: `web/src/domain/saw/types.ts`, `web/src/domain/saw/engine.ts`, `web/src/domain/saw/categories.ts`
-- Tes: `web/src/domain/saw/engine.test.ts`, `web/src/domain/saw/categories.test.ts`, `web/src/domain/saw/fixtures.ts` (matriks Tabel VI)
+- Buat: `src/domain/saw/types.ts`, `src/domain/saw/engine.ts`, `src/domain/saw/categories.ts`
+- Tes: `src/domain/saw/engine.test.ts`, `src/domain/saw/categories.test.ts`, `src/domain/saw/fixtures.ts` (matriks Tabel VI)
 
 **Antarmuka:**
 - Menghasilkan:
@@ -146,14 +147,14 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
   - `tie-break by code`: dua alternatif identik B2 dan B1 → B1 di peringkat lebih tinggi.
   - `rejects weights not summing to 1` → RangeError.
 - [ ] **Langkah 2:** tulis tes gagal `categories.test.ts`. `categorize` untuk 97, 87, 75, 70, 46 → sangat_perlu, sangat_perlu, perlu, pantau, belum_perlu. Batas tepat: 80 → sangat_perlu, 72 → perlu, 55 → pantau, 54 → belum_perlu. `nearBoundary` true untuk 75 dan 70, false untuk 97, 87, 46.
-- [ ] **Langkah 3:** jalankan `npx vitest run src/domain/saw` dan pastikan FAIL karena modul belum ada.
+- [ ] **Langkah 3:** jalankan `npx vitest run domain/saw` dan pastikan FAIL karena modul belum ada.
 - [ ] **Langkah 4:** implementasikan sesuai antarmuka. `roundHalfUp` memakai `Math.round(x * 10**d + Number.EPSILON) / 10**d`.
 - [ ] **Langkah 5:** tes PASS, lalu commit `feat(domain): SAW engine and categories with golden tests from the report`.
 
 ### Task 3: Sensitivitas, alokasi, dampak, status SPM, alasan
 
 **File:**
-- Buat: `web/src/domain/saw/sensitivity.ts`, `web/src/domain/saw/allocation.ts`, `web/src/domain/saw/impact.ts`, `web/src/domain/service-status.ts`, `web/src/domain/saw/explain.ts`
+- Buat: `src/domain/saw/sensitivity.ts`, `src/domain/saw/allocation.ts`, `src/domain/saw/impact.ts`, `src/domain/service-status.ts`, `src/domain/saw/explain.ts`
 - Tes: berkas `*.test.ts` di samping masing-masing berkas
 
 **Antarmuka:**
@@ -214,15 +215,15 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
     | A5 | ["Layanan sesuai target"] |
 
   - `compareToAverage` untuk A4 → rata-rata 418; 80,4; 23,6; 16,2; 0,53; 3,8. `moreNeed` bernilai true untuk keenam kriteria.
-- [ ] **Langkah 2:** jalankan `npx vitest run src/domain` dan pastikan FAIL.
+- [ ] **Langkah 2:** jalankan `npx vitest run domain` dan pastikan FAIL.
 - [ ] **Langkah 3:** implementasikan. Urutan alasan: kepadatan (penuh jika ≥ kritis, padat jika > batas atas ideal), lalu tunggu (> target), lalu keluhan (> rata-rata). Ambil 2 pertama.
 - [ ] **Langkah 4:** PASS, lalu commit `feat(domain): sensitivity, allocation, impact, SPM status and reasons`.
 
 ### Task 4: Parser KML dan CSV, helper koridor
 
 **File:**
-- Buat: `web/src/domain/kml.ts`, `web/src/domain/metrics-csv.ts`, `web/src/domain/corridor.ts`, `web/src/domain/number.ts`
-- Tes: `*.test.ts` di samping masing-masing berkas, plus fixture `web/tests/fixtures/rute-A6-keputih-gubeng.kml` (19 Placemark Point dan satu LineString sepanjang ±14,6 km)
+- Buat: `src/domain/kml.ts`, `src/domain/metrics-csv.ts`, `src/domain/corridor.ts`, `src/domain/number.ts`
+- Tes: `*.test.ts` di samping masing-masing berkas, plus fixture `src/tests/fixtures/rute-A6-keputih-gubeng.kml` (19 Placemark Point dan satu LineString sepanjang ±14,6 km)
 
 **Antarmuka:**
 - Menghasilkan:
@@ -254,9 +255,9 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 5: Skema database dan harness uji integrasi
 
 **File:**
-- Buat: `web/src/server/db/schema.ts`, `web/src/server/db/client.ts`, `web/drizzle.config.ts`, `web/drizzle/` (migrasi hasil generate)
-- Buat: `web/tests/integration/setup.ts` (global setup: migrasi `wirawiri_test`)
-- Tes: `web/tests/integration/schema.test.ts`
+- Buat: `src/server/db/schema.ts`, `src/server/db/client.ts`, `src/drizzle.config.ts`, `src/drizzle/` (migrasi hasil generate)
+- Buat: `src/tests/integration/setup.ts` (global setup: migrasi `wirawiri_test`)
+- Tes: `src/tests/integration/schema.test.ts`
 
 **Antarmuka:**
 - Menghasilkan:
@@ -291,11 +292,11 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 6: Seed deterministik dan reset demo
 
 **File:**
-- Buat di `web/src/server/db/seed/`:
+- Buat di `src/server/db/seed/`:
   - `index.ts` (`seed(tx)`)
   - `users.ts`, `corridors.ts`, `history.ts` (generator 16 bulan), `map.ts` (geometri dan halte), `archive.ts`, `misc.ts` (events, keluhan, data_sources, audit)
-- Buat: `web/src/server/services/reset.ts`, `web/scripts/seed.ts`
-- Tes: `web/tests/integration/seed.test.ts`
+- Buat: `src/server/services/reset.ts`, `src/scripts/seed.ts`
+- Tes: `src/tests/integration/seed.test.ts`
 
 **Antarmuka:**
 - Memakai: `computeSaw`, `sensitivity`, `allocate` (Task 2–3); skema (Task 5).
@@ -415,9 +416,9 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 7: Autentikasi, helper HTTP, dan penjaga rute
 
 **File:**
-- Buat: `web/src/server/http.ts`, `web/src/server/auth/password.ts`, `web/src/server/auth/session.ts`, `web/src/server/auth/guard.ts`
-- Buat: `web/src/app/api/v1/auth/login/route.ts`, `.../auth/logout/route.ts`, `.../auth/me/route.ts`, `web/src/proxy.ts`
-- Tes: `web/tests/integration/auth.test.ts`, `web/tests/integration/helpers.ts`
+- Buat: `src/server/http.ts`, `src/server/auth/password.ts`, `src/server/auth/session.ts`, `src/server/auth/guard.ts`
+- Buat: `src/app/api/v1/auth/login/route.ts`, `.../auth/logout/route.ts`, `.../auth/me/route.ts`, `src/proxy.ts`
+- Tes: `src/tests/integration/auth.test.ts`, `src/tests/integration/helpers.ts`
 
 **Antarmuka:**
 - Menghasilkan:
@@ -445,11 +446,11 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 8: Design system dan halaman Login
 
 **File:**
-- Buat: `web/src/app/globals.css` (token `@theme`), `web/src/app/layout.tsx` (Poppins via `next/font`)
-- Buat di `web/src/components/ui/`: `button.tsx`, `card.tsx`, `chip.tsx` (StatusChip kritis/waspada/normal dan CategoryChip), `checkbox.tsx`, `password-input.tsx`, `field.tsx` (label, galat inline, teks bantu), `modal.tsx`, `slide-over.tsx`, `toast.tsx`, `tooltip.tsx`, `skeleton.tsx`, `empty-state.tsx`, `table.tsx`
-- Buat: `web/src/lib/api-client.ts`
-- Buat: `web/src/app/(auth)/login/page.tsx`, `web/src/app/(auth)/login/login-form.tsx`, `web/src/app/(auth)/login/bus-intro.tsx`
-- Tes: `web/e2e/login.spec.ts`, `web/e2e/global-setup.ts` (migrasi DB e2e), `web/e2e/fixtures.ts` (`test` dengan `beforeEach` otomatis memanggil `resetDemoData` ke DB e2e, plus helper `loginAs(page, role)`); `playwright.config.ts` memakai `workers: 1` dan `fullyParallel: false` karena semua tes berbagi satu DB
+- Buat: `src/app/globals.css` (token `@theme`), `src/app/layout.tsx` (Poppins via `next/font`)
+- Buat di `src/components/ui/`: `button.tsx`, `card.tsx`, `chip.tsx` (StatusChip kritis/waspada/normal dan CategoryChip), `checkbox.tsx`, `password-input.tsx`, `field.tsx` (label, galat inline, teks bantu), `modal.tsx`, `slide-over.tsx`, `toast.tsx`, `tooltip.tsx`, `skeleton.tsx`, `empty-state.tsx`, `table.tsx`
+- Buat: `src/lib/api-client.ts`
+- Buat: `src/app/(auth)/login/page.tsx`, `src/app/(auth)/login/login-form.tsx`, `src/app/(auth)/login/bus-intro.tsx`
+- Tes: `src/e2e/login.spec.ts`, `src/e2e/global-setup.ts` (migrasi DB e2e), `src/e2e/fixtures.ts` (`test` dengan `beforeEach` otomatis memanggil `resetDemoData` ke DB e2e, plus helper `loginAs(page, role)`); `playwright.config.ts` memakai `workers: 1` dan `fullyParallel: false` karena semua tes berbagi satu DB
 
 **Antarmuka:**
 - Memakai: endpoint login (Task 7).
@@ -471,11 +472,11 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 9: Kerangka aplikasi, periode, pencarian, notifikasi
 
 **File:**
-- Buat di `web/src/components/layout/`: `sidebar.tsx`, `header.tsx`, `period-picker.tsx`, `global-search.tsx`, `notification-bell.tsx`, `demo-banner.tsx`, `small-screen-notice.tsx`
-- Buat: `web/src/app/(app)/layout.tsx`, `web/src/app/(app)/loading.tsx` (skeleton kartu dan tabel saat halaman memuat)
-- Buat di `web/src/server/services/`: `periods.ts`, `search.ts`, `notifications.ts`
-- Buat: `web/src/app/api/v1/periods/route.ts`, `.../search/route.ts`, `.../notifications/route.ts`, `.../notifications/seen/route.ts`
-- Tes: `web/tests/integration/shell.test.ts`, `web/e2e/shell.spec.ts`
+- Buat di `src/components/layout/`: `sidebar.tsx`, `header.tsx`, `period-picker.tsx`, `global-search.tsx`, `notification-bell.tsx`, `demo-banner.tsx`, `small-screen-notice.tsx`
+- Buat: `src/app/(app)/layout.tsx`, `src/app/(app)/loading.tsx` (skeleton kartu dan tabel saat halaman memuat)
+- Buat di `src/server/services/`: `periods.ts`, `search.ts`, `notifications.ts`
+- Buat: `src/app/api/v1/periods/route.ts`, `.../search/route.ts`, `.../notifications/route.ts`, `.../notifications/seen/route.ts`
+- Tes: `src/tests/integration/shell.test.ts`, `src/e2e/shell.spec.ts`
 
 **Antarmuka:**
 - Menghasilkan:
@@ -500,9 +501,9 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 10: Service baca (dashboard, rekomendasi, koridor, peta, arsip)
 
 **File:**
-- Buat di `web/src/server/services/`: `settings.ts` (baca saja dulu), `recommendation.ts`, `dashboard.ts`, `corridors.ts` (baca), `buses.ts` (baca), `map.ts`, `reports.ts` (baca), `audit.ts`
-- Buat: `web/src/app/api/v1/dashboard/route.ts`, `.../recommendations/route.ts`, `.../recommendations/calculation/route.ts`, `.../corridors/route.ts` (GET), `.../buses/route.ts` (GET), `.../map/route.ts`, `.../reports/route.ts` (GET), `.../audit-log/route.ts`
-- Tes: `web/tests/integration/read-services.test.ts`
+- Buat di `src/server/services/`: `settings.ts` (baca saja dulu), `recommendation.ts`, `dashboard.ts`, `corridors.ts` (baca), `buses.ts` (baca), `map.ts`, `reports.ts` (baca), `audit.ts`
+- Buat: `src/app/api/v1/dashboard/route.ts`, `.../recommendations/route.ts`, `.../recommendations/calculation/route.ts`, `.../corridors/route.ts` (GET), `.../buses/route.ts` (GET), `.../map/route.ts`, `.../reports/route.ts` (GET), `.../audit-log/route.ts`
+- Tes: `src/tests/integration/read-services.test.ts`
 
 **Antarmuka:**
 - Memakai: domain (Task 2–4) dan seed (Task 6).
@@ -535,9 +536,9 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 11: Halaman Dashboard dan panel geser
 
 **File:**
-- Buat: `web/src/app/(app)/dashboard/page.tsx`
-- Buat di `web/src/components/dashboard/`: `kpi-cards.tsx`, `trend-chart.tsx`, `corridor-bars.tsx`, `performance-table.tsx`, `alerts-card.tsx`, `complaints-card.tsx`, `recommendation-card.tsx`, `corridor-data-panel.tsx`, `recommendation-panel.tsx`
-- Tes: `web/e2e/dashboard.spec.ts`
+- Buat: `src/app/(app)/dashboard/page.tsx`
+- Buat di `src/components/dashboard/`: `kpi-cards.tsx`, `trend-chart.tsx`, `corridor-bars.tsx`, `performance-table.tsx`, `alerts-card.tsx`, `complaints-card.tsx`, `recommendation-card.tsx`, `corridor-data-panel.tsx`, `recommendation-panel.tsx`
+- Tes: `src/e2e/dashboard.spec.ts`
 
 **Antarmuka:**
 - Memakai: `getDashboard`, `getRecommendation`, `listCorridors`; SlideOver (Task 8).
@@ -555,9 +556,9 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 12: Halaman Peta Rute
 
 **File:**
-- Buat: `web/src/app/(app)/peta-rute/page.tsx`
-- Buat di `web/src/components/map/`: `schematic-map.tsx`, `bus-markers.tsx` (klien, animasi), `corridor-list.tsx`, `busiest-stops.tsx`
-- Tes: `web/e2e/map.spec.ts`
+- Buat: `src/app/(app)/peta-rute/page.tsx`
+- Buat di `src/components/map/`: `schematic-map.tsx`, `bus-markers.tsx` (klien, animasi), `corridor-list.tsx`, `busiest-stops.tsx`
+- Tes: `src/e2e/map.spec.ts`
 
 **Antarmuka:**
 - Memakai: `getMapData` (Task 10).
@@ -573,10 +574,10 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 13: Data Koridor (baca), Semua Unit (baca), Rekomendasi, dan detail perhitungan
 
 **File:**
-- Buat: `web/src/app/(app)/data-koridor/page.tsx`, `web/src/app/(app)/data-koridor/unit/page.tsx`
-- Buat: `web/src/app/(app)/rekomendasi/page.tsx`
-- Buat di `web/src/components/recommendation/`: `hero.tsx`, `ranking-list.tsx`, `why-panel.tsx`, `impact-table.tsx`, `weights-panel.tsx`, `calculation-panel.tsx` (tab Matriks, Normalisasi, Hasil, Uji sensitivitas)
-- Tes: `web/e2e/read-pages.spec.ts`
+- Buat: `src/app/(app)/data-koridor/page.tsx`, `src/app/(app)/data-koridor/unit/page.tsx`
+- Buat: `src/app/(app)/rekomendasi/page.tsx`
+- Buat di `src/components/recommendation/`: `hero.tsx`, `ranking-list.tsx`, `why-panel.tsx`, `impact-table.tsx`, `weights-panel.tsx`, `calculation-panel.tsx` (tab Matriks, Normalisasi, Hasil, Uji sensitivitas)
+- Tes: `src/e2e/read-pages.spec.ts`
 
 **Antarmuka:**
 - Memakai: `listCorridors`, `listBuses`, `listAudit`, `getRecommendation`, `getCalculation`.
@@ -603,12 +604,12 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 14: Pengaturan (SAW live), sinkron, preferensi notifikasi
 
 **File:**
-- Ubah: `web/src/server/services/settings.ts` (tambah `updateSettings`, `resetDefaultSettings`, `DEFAULT_SETTINGS`, `settingsSchema`)
-- Buat: `web/src/server/services/sync.ts`
-- Buat: `web/src/app/api/v1/settings/route.ts` (GET, PUT), `.../settings/preview/route.ts` (POST), `.../settings/reset-default/route.ts` (POST), `.../sync/route.ts` (POST), `.../me/notification-prefs/route.ts` (PUT)
-- Buat: `web/src/app/(app)/pengaturan/page.tsx`
-- Buat di `web/src/components/settings/`: `weights-form.tsx`, `preview-panel.tsx`, `spm-form.tsx`, `category-bounds.tsx`, `data-sources.tsx`, `notification-prefs.tsx`
-- Tes: `web/tests/integration/settings.test.ts`, `web/e2e/settings.spec.ts`
+- Ubah: `src/server/services/settings.ts` (tambah `updateSettings`, `resetDefaultSettings`, `DEFAULT_SETTINGS`, `settingsSchema`)
+- Buat: `src/server/services/sync.ts`
+- Buat: `src/app/api/v1/settings/route.ts` (GET, PUT), `.../settings/preview/route.ts` (POST), `.../settings/reset-default/route.ts` (POST), `.../sync/route.ts` (POST), `.../me/notification-prefs/route.ts` (PUT)
+- Buat: `src/app/(app)/pengaturan/page.tsx`
+- Buat di `src/components/settings/`: `weights-form.tsx`, `preview-panel.tsx`, `spm-form.tsx`, `category-bounds.tsx`, `data-sources.tsx`, `notification-prefs.tsx`
+- Tes: `src/tests/integration/settings.test.ts`, `src/e2e/settings.spec.ts`
 
 **Antarmuka:**
 - Menghasilkan:
@@ -638,10 +639,10 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 15: CRUD koridor dan unggah KML
 
 **File:**
-- Ubah: `web/src/server/services/corridors.ts` (tambah `createCorridor`, `updateCorridor`, `deleteCorridor`, `corridorInputSchema`)
-- Buat: `web/src/app/api/v1/corridors/route.ts` (POST), `.../corridors/[id]/route.ts` (PATCH, DELETE), `.../corridors/route-file/route.ts` (POST multipart)
-- Buat: `web/src/components/corridors/corridor-form-modal.tsx`, `web/src/components/corridors/delete-corridor-dialog.tsx`
-- Tes: `web/tests/integration/corridors.test.ts`, `web/e2e/corridors.spec.ts`
+- Ubah: `src/server/services/corridors.ts` (tambah `createCorridor`, `updateCorridor`, `deleteCorridor`, `corridorInputSchema`)
+- Buat: `src/app/api/v1/corridors/route.ts` (POST), `.../corridors/[id]/route.ts` (PATCH, DELETE), `.../corridors/route-file/route.ts` (POST multipart)
+- Buat: `src/components/corridors/corridor-form-modal.tsx`, `src/components/corridors/delete-corridor-dialog.tsx`
+- Tes: `src/tests/integration/corridors.test.ts`, `src/e2e/corridors.spec.ts`
 
 **Antarmuka:**
 - Menghasilkan:
@@ -668,10 +669,10 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 16: Impor metrik CSV
 
 **File:**
-- Buat: `web/src/server/services/metrics.ts`
-- Buat: `web/src/app/api/v1/metrics/import/route.ts` (POST multipart), `.../metrics/template/route.ts` (GET CSV)
-- Buat: `web/src/components/corridors/import-dialog.tsx`
-- Tes: `web/tests/integration/metrics.test.ts`, `web/e2e/import.spec.ts`, fixture `web/tests/fixtures/metrics-a6.csv`
+- Buat: `src/server/services/metrics.ts`
+- Buat: `src/app/api/v1/metrics/import/route.ts` (POST multipart), `.../metrics/template/route.ts` (GET CSV)
+- Buat: `src/components/corridors/import-dialog.tsx`
+- Tes: `src/tests/integration/metrics.test.ts`, `src/e2e/import.spec.ts`, fixture `src/tests/fixtures/metrics-a6.csv`
 
 **Antarmuka:**
 - Memakai: `parseMetricsCsv` (Task 4).
@@ -687,7 +688,7 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
     - totalUnits 8 dan `overCap` false
     - V A4 tetap 0,9667, karena max dan min tiap kolom tidak berubah
     - waktu tunggu A6 tersimpan 22,5, bukan 225
-  - E2E `web/e2e/import.spec.ts`: planner menambah A6, lalu mengimpor `web/tests/fixtures/metrics-a6.csv` lewat dialog Impor Data → toast "1 baris diimpor" → halaman Rekomendasi menampilkan A6 di urutan 4.
+  - E2E `src/e2e/import.spec.ts`: planner menambah A6, lalu mengimpor `src/tests/fixtures/metrics-a6.csv` lewat dialog Impor Data → toast "1 baris diimpor" → halaman Rekomendasi menampilkan A6 di urutan 4.
   - Berkas dengan satu baris rusak → 422, dan tidak ada baris yang tersimpan (jumlah `corridor_metrics` tetap).
   - Berkas > 200 KB → 422. Kabid → 403.
 - [ ] **Langkah 2:** pastikan FAIL. **Langkah 3:** implementasikan. Dialog menampilkan daftar galat per baris dan tautan unduh template. **Langkah 4:** PASS. **Langkah 5:** commit `feat(metrics): atomic CSV import with per-row validation`.
@@ -695,10 +696,10 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 17: Status unit armada (Admin Depo)
 
 **File:**
-- Ubah: `web/src/server/services/buses.ts` (tambah `updateBusStatus`)
-- Buat: `web/src/app/api/v1/buses/[code]/route.ts` (PATCH)
-- Ubah: `web/src/app/(app)/data-koridor/unit/page.tsx` (kontrol status untuk admin_depo)
-- Tes: `web/tests/integration/buses.test.ts`, `web/e2e/buses.spec.ts`
+- Ubah: `src/server/services/buses.ts` (tambah `updateBusStatus`)
+- Buat: `src/app/api/v1/buses/[code]/route.ts` (PATCH)
+- Ubah: `src/app/(app)/data-koridor/unit/page.tsx` (kontrol status untuk admin_depo)
+- Tes: `src/tests/integration/buses.test.ts`, `src/e2e/buses.spec.ts`
 
 **Antarmuka:**
 - Menghasilkan: `PATCH /buses/:code` (admin_depo) dengan body `{ status, note?, returnDate? }`.
@@ -717,12 +718,12 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 18: Alur laporan (buat, sahkan, kembalikan) dan halaman Laporan
 
 **File:**
-- Ubah: `web/src/server/services/reports.ts` (tambah `createPriorityReport`, `approveReport`, `returnReport`, `buildConsiderations`, tipe `ReportSnapshot`)
-- Buat: `web/src/domain/report-text.ts` (`buildConsiderations`, `buildSummaryParagraph`; fungsi murni)
-- Buat: `web/src/app/api/v1/reports/route.ts` (POST), `.../reports/[id]/approve/route.ts`, `.../reports/[id]/return/route.ts`
-- Buat: `web/src/app/(app)/laporan/page.tsx`, `web/src/app/(app)/laporan/arsip/page.tsx`
-- Buat di `web/src/components/reports/`: `decision-sheet.tsx` (pratinjau HTML halaman 1), `report-options.tsx`, `report-history.tsx`, `approve-dialog.tsx`, `confirm-create-dialog.tsx`
-- Tes: `web/src/domain/report-text.test.ts`, `web/tests/integration/reports.test.ts`, `web/e2e/reports.spec.ts`
+- Ubah: `src/server/services/reports.ts` (tambah `createPriorityReport`, `approveReport`, `returnReport`, `buildConsiderations`, tipe `ReportSnapshot`)
+- Buat: `src/domain/report-text.ts` (`buildConsiderations`, `buildSummaryParagraph`; fungsi murni)
+- Buat: `src/app/api/v1/reports/route.ts` (POST), `.../reports/[id]/approve/route.ts`, `.../reports/[id]/return/route.ts`
+- Buat: `src/app/(app)/laporan/page.tsx`, `src/app/(app)/laporan/arsip/page.tsx`
+- Buat di `src/components/reports/`: `decision-sheet.tsx` (pratinjau HTML halaman 1), `report-options.tsx`, `report-history.tsx`, `approve-dialog.tsx`, `confirm-create-dialog.tsx`
+- Tes: `src/domain/report-text.test.ts`, `src/tests/integration/reports.test.ts`, `src/e2e/reports.spec.ts`
 
 **Antarmuka:**
 - Memakai: `getRecommendation`, `listReports` (Task 10).
@@ -760,9 +761,9 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 19: Dokumen PDF dan XLSX
 
 **File:**
-- Buat di `web/src/documents/`: `pdf/fonts.ts` (Poppins TTF dari `web/public/fonts`), `pdf/priority-report.tsx`, `pdf/quarterly-report.tsx`, `pdf/simulation-report.tsx`, `pdf/summary.tsx`, `pdf/attachments.tsx`, `render.ts`, `xlsx.ts`
-- Buat: `web/src/app/api/v1/reports/[id]/file/route.ts`, `web/src/app/api/v1/dashboard/summary.pdf/route.ts`
-- Tes: `web/tests/integration/documents.test.ts`, `web/e2e/documents.spec.ts` (kabid klik "Unduh Laporan (PDF)" → unduhan bernama `Prioritas-November-2026.pdf` dan berukuran lebih dari 10 KB)
+- Buat di `src/documents/`: `pdf/fonts.ts` (Poppins TTF dari `src/public/fonts`), `pdf/priority-report.tsx`, `pdf/quarterly-report.tsx`, `pdf/simulation-report.tsx`, `pdf/summary.tsx`, `pdf/attachments.tsx`, `render.ts`, `xlsx.ts`
+- Buat: `src/app/api/v1/reports/[id]/file/route.ts`, `src/app/api/v1/dashboard/summary.pdf/route.ts`
+- Tes: `src/tests/integration/documents.test.ts`, `src/e2e/documents.spec.ts` (kabid klik "Unduh Laporan (PDF)" → unduhan bernama `Prioritas-November-2026.pdf` dan berukuran lebih dari 10 KB)
 
 **Antarmuka:**
 - Memakai: `ReportSnapshot` (Task 18), `getDashboard`, `getMapData`.
@@ -790,8 +791,8 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 20: Endpoint reset cron
 
 **File:**
-- Buat: `web/src/app/api/cron/reset/route.ts`, `web/vercel.json`
-- Tes: `web/tests/integration/cron.test.ts`
+- Buat: `src/app/api/cron/reset/route.ts`, `src/vercel.json`
+- Tes: `src/tests/integration/cron.test.ts`
 
 **Antarmuka:**
 - Memakai: `resetDemoData` (Task 6).
@@ -804,7 +805,7 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 21: CI GitHub Actions
 
 **File:**
-- Buat: `.github/workflows/web.yml` di root repo, dengan `paths: ['web/**']` dan `working-directory: web`
+- Buat: `.github/workflows/web.yml` di root repo, dengan `paths: ['src/**']` dan `working-directory: src`
 
 **Antarmuka:**
 - Job `test`: layanan `postgres:16` (port 5432, database `wirawiri_test` dan `wirawiri_e2e`), Node LTS, `npm ci`, lalu berurutan lint, typecheck, test:unit, test:int, `npx playwright install --with-deps chromium`, build, test:e2e. Laporan Playwright diunggah sebagai artefak jika gagal.
@@ -816,17 +817,17 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 ### Task 22: Pemeriksaan visual terhadap desain
 
 **File:**
-- Buat: `web/e2e/visual.spec.ts` (memotret 11 tampilan pada 1280 px ke `web/test-results/visual/`)
-- Buat: `web/scripts/visual-compare.ts` (menyusun gambar berdampingan dengan `design/screens/*.png` ke `web/test-results/visual/compare/`)
+- Buat: `src/e2e/visual.spec.ts` (memotret 11 tampilan pada 1280 px ke `src/test-results/visual/`)
+- Buat: `src/scripts/visual-compare.ts` (menyusun gambar berdampingan dengan `design/screens/*.png` ke `src/test-results/visual/compare/`)
 
 - [ ] **Langkah 1:** jalankan `npx playwright test visual` dan `npx tsx scripts/visual-compare.ts`. Periksa 11 gambar berdampingan.
-- [ ] **Langkah 2:** perbaiki selisih yang terlihat (jarak, ukuran huruf, warna, teks) sampai tiap halaman setara dengan desain. Catat perbedaan yang disengaja di `web/README.md` bagian "Perbedaan dari Figma", yaitu: panel akun demo, banner demo, halaman Semua Unit, panel detail perhitungan, tombol Sahkan dan Kembalikan, penanda dekat batas, dan dialog konfirmasi.
+- [ ] **Langkah 2:** perbaiki selisih yang terlihat (jarak, ukuran huruf, warna, teks) sampai tiap halaman setara dengan desain. Catat perbedaan yang disengaja di `src/README.md` bagian "Perbedaan dari Figma", yaitu: panel akun demo, banner demo, halaman Semua Unit, panel detail perhitungan, tombol Sahkan dan Kembalikan, penanda dekat batas, dan dialog konfirmasi.
 - [ ] **Langkah 3:** commit `test(visual): screenshot comparison against Figma exports`.
 
 ### Task 23: Dokumentasi
 
 **File:**
-- Buat: `web/README.md` dengan bagian:
+- Buat: `src/README.md` dengan bagian:
   - fitur
   - arsitektur (diagram lapisan dari spesifikasi)
   - tabel endpoint API (metode, path, peran)
@@ -834,9 +835,9 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
   - pengujian
   - perbedaan dari Figma
   - stack beserta versi
-- Ubah: `README.md` root. Tambahkan bagian "Live demo" di bawah judul (link diisi di Task 24) beserta tabel akun demo, ringkasan stack, dan bagian "Repository structure" yang memuat `web/`.
+- Ubah: `README.md` root. Tambahkan bagian "Live demo" di bawah judul (link diisi di Task 24) beserta tabel akun demo, ringkasan stack, dan bagian "Repository structure" yang memuat `src/`.
 
-- [ ] **Langkah 1:** tulis keduanya. Pastikan setiap endpoint di `src/app/api/v1/**/route.ts` ada di tabel API (cek dengan `find src/app/api -name route.ts`).
+- [ ] **Langkah 1:** tulis keduanya. Pastikan setiap endpoint di `src/app/api/v1/**/route.ts` ada di tabel API (cek dengan `find app/api -name route.ts` dari folder `src/`).
 - [ ] **Langkah 2:** commit `docs(web): README with architecture, API table and local setup`, lalu `git push`.
 
 ### Task 24: Deploy (Supabase + Vercel) dan rilis
@@ -847,7 +848,7 @@ Kondisi yang paling mungkin mengenai pengguna tetapi tidak tersirat langsung dar
 - [ ] **Langkah 1:** **minta persetujuan pengguna** sebelum membuat proyek Supabase (region Singapura `ap-southeast-1`, free tier) dan proyek Vercel. Jangan lanjut tanpa jawaban "ya".
 - [ ] **Langkah 2:** buat proyek Supabase lewat MCP Supabase. Ambil dua connection string: *session pooler* (5432, untuk migrasi) dan *transaction pooler* (6543, untuk aplikasi).
 - [ ] **Langkah 3:** dari lokal jalankan `DATABASE_URL=<session> npm run db:migrate`, lalu `npm run db:seed`. Verifikasi dengan `select count(*) from reports` = 24.
-- [ ] **Langkah 4:** buat proyek Vercel dari repo GitHub yang sudah ada dengan Root Directory `web`. Jika Vercel meminta otorisasi GitHub manual, berikan instruksi langkah demi langkah ke pengguna. Set env `DATABASE_URL` (transaction pooler), `SESSION_SECRET` dan `CRON_SECRET` (`openssl rand -base64 32`) untuk Production.
+- [ ] **Langkah 4:** buat proyek Vercel dari repo GitHub yang sudah ada dengan Root Directory `src`. Jika Vercel meminta otorisasi GitHub manual, berikan instruksi langkah demi langkah ke pengguna. Set env `DATABASE_URL` (transaction pooler), `SESSION_SECRET` dan `CRON_SECRET` (`openssl rand -base64 32`) untuk Production.
 - [ ] **Langkah 5:** merge ke `main`: `git checkout main && git pull --ff-only && git merge --ff-only feat/web-app && git push origin main`. Jika fast-forward gagal, rebase `feat/web-app` ke `main` lalu ulangi.
 - [ ] **Langkah 6:** tunggu deploy selesai. Jalankan smoke test ke URL produksi dengan `BASE_URL=<url> npx playwright test login dashboard`, lalu cek bahwa cron "reset" terdaftar di dashboard Vercel.
 - [ ] **Langkah 7:** isi link demo di README root, commit `docs: add live demo link`, lalu push ke `main`.

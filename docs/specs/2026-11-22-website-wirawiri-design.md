@@ -15,7 +15,7 @@ Mengubah desain Figma WiraWiri (7 halaman + 4 tampilan turunan) menjadi website 
 3. SAW dihitung backend dari data di database. Dengan data awal, hasilnya identik dengan laporan: V(A4) = 0,9667, skor 97/87/75/70/46, dan Tabel IX untuk sensitivitas. Kesamaan ini dijaga oleh uji otomatis.
 4. Mengubah bobot, batas kategori, atau data koridor langsung mengubah rekomendasi.
 5. Alur laporan berjalan dari ujung ke ujung: buat, ajukan, sahkan oleh Kepala Bidang, arsipkan, unduh PDF.
-6. Kode di folder `web/` rapi, teruji, dan bisa dijelaskan saat interview.
+6. Kode di folder `src/` rapi, teruji, dan bisa dijelaskan saat interview.
 
 ## 2. Keputusan yang sudah disepakati
 
@@ -25,7 +25,7 @@ Mengubah desain Figma WiraWiri (7 halaman + 4 tampilan turunan) menjadi website 
 | Arsitektur | Pendekatan A: satu aplikasi Next.js dengan lapisan backend yang tegas (REST API → service → database) |
 | Fitur yang berfungsi | Login + 3 peran, SAW live, kelola data koridor (CRUD + impor CSV), alur laporan sampai PDF |
 | Data demo | Data bersama untuk semua pengunjung, direset ke kondisi awal setiap hari pukul 00.00 WIB |
-| Lokasi kode | Folder `web/` di repo `UIUX-of-Wirawiri-Decision-Making-` |
+| Lokasi kode | Folder `src/` di repo `UIUX-of-Wirawiri-Decision-Making-` |
 
 ## 3. Di luar lingkup
 
@@ -68,19 +68,19 @@ Pustaka utama:
 Struktur folder:
 
 ```
-web/
-├── src/app/(auth)/login/            halaman login
-├── src/app/(app)/                   layout sidebar + header, lalu tiap halaman
+src/                                 seluruh kode website (satu proyek Next.js, tanpa folder src bersarang)
+├── app/(auth)/login/                halaman login
+├── app/(app)/                       layout sidebar + header, lalu tiap halaman
 │   ├── dashboard/  peta-rute/  data-koridor/  data-koridor/unit/
 │   ├── rekomendasi/  laporan/  laporan/arsip/  pengaturan/
-├── src/app/api/v1/                  route handler REST
-├── src/app/api/cron/reset/          reset harian
-├── src/server/{db,auth,services}/   skema, migrasi, seed, sesi, service
-├── src/domain/{saw,kml,csv}/        logika murni
-├── src/components/{ui,charts,layout}/
-├── src/documents/                   template PDF dan XLSX
+├── app/api/v1/                      route handler REST
+├── app/api/cron/reset/              reset harian
+├── server/{db,auth,services}/       skema, migrasi, seed, sesi, service
+├── domain/{saw,kml,csv}/            logika murni
+├── components/{ui,charts,layout}/
+├── documents/                       template PDF dan XLSX
 ├── tests/{unit,integration}/  e2e/
-├── docker-compose.yml  .env.example  README.md
+├── package.json  docker-compose.yml  .env.example  README.md
 ```
 
 ## 5. Peran dan hak akses
@@ -238,11 +238,11 @@ GitHub Actions menjalankan lint, typecheck, uji unit, uji integrasi, dan e2e den
 ## 13. Deploy dan operasional
 
 - **Database:** proyek Supabase (free tier) dengan migrasi Drizzle. Aplikasi memakai connection string pooler (mode transaksi, `prepare: false`).
-- **Vercel:** proyek dengan *Root Directory* `web/`, terhubung ke repo GitHub sehingga setiap push ke `main` otomatis deploy. Environment variable: `DATABASE_URL`, `SESSION_SECRET`, `CRON_SECRET`.
+- **Vercel:** proyek dengan *Root Directory* `src/`, terhubung ke repo GitHub sehingga setiap push ke `main` otomatis deploy. Environment variable: `DATABASE_URL`, `SESSION_SECRET`, `CRON_SECRET`.
 - **Cron harian:** `0 17 * * *` (00.00 WIB) memanggil `/api/cron/reset`. Cron ini juga mencegah proyek Supabase dijeda karena tidak aktif.
 - **Banner demo:** semua halaman menampilkan "Mode demo · data kembali ke kondisi awal setiap hari pukul 00.00 WIB".
 - **Persetujuan sebelum dibuat:** pembuatan proyek Supabase dan Vercel, serta penyambungan repo, menunggu persetujuan pemilik akun. Dashboard Vercel mungkin meminta otorisasi GitHub secara manual.
-- **Setelah live:** README utama ditambah link demo, akun demo, dan ringkasan arsitektur. README `web/` berisi cara menjalankan lokal (`docker compose up`, `npm run db:migrate`, `npm run db:seed`, `npm run dev`).
+- **Setelah live:** README utama ditambah link demo, akun demo, dan ringkasan arsitektur. README `src/` berisi cara menjalankan lokal (`docker compose up`, `npm run db:migrate`, `npm run db:seed`, `npm run dev`).
 
 ## 14. Tahapan pengerjaan
 
