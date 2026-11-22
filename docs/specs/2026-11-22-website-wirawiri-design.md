@@ -1,6 +1,6 @@
 # Spesifikasi Desain: Website WiraWiri Feeder Suroboyo
 
-Tanggal: 22 November 2026 · Status: menunggu review
+Tanggal: 22 November 2026 · Status: disetujui
 
 ## 1. Tujuan
 
@@ -104,9 +104,9 @@ Akun demo, ditampilkan di halaman login sebagai tiga pilihan cepat:
 |---|---|---|
 | Transport Planner | Bambang Irawan, S.T. | bambang.irawan@dishub.surabaya.go.id |
 | Kepala Bidang Angkutan | Ir. H. Arif Sunaryo, M.T. | arif.sunaryo@dishub.surabaya.go.id |
-| Admin Depo | Siti Rahmawati | siti.rahmawati@dishub.surabaya.go.id |
+| Admin Depo | Bambang Irawan, S.T. | admin.depo@dishub.surabaya.go.id |
 
-Kata sandi ketiganya `wirawiri-demo`, dan login bisa memakai email atau NIP.
+Kata sandi ketiganya `wirawiri-demo`, dan login bisa memakai email atau NIP. Akun Transport Planner dan Admin Depo sama-sama atas nama Bambang Irawan, S.T. sesuai desain. Keduanya dibedakan oleh label peran di header ("Transport Planner · Dishub" dan "Admin Depo · Dishub").
 
 Pengesahan dilakukan oleh **Kepala Bidang Angkutan**, sesuai kolom tanda tangan di desain. Subjudul halaman Laporan yang menyebut "Kepala Dinas" diubah menjadi "Kepala Bidang" di website, dan hal yang sama perlu diperbaiki di Figma.
 
