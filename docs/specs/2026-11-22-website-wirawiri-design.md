@@ -162,7 +162,7 @@ computeSaw(alternatives, criteria) → {
   matrix, extremes, normalized, scores: { code, v, score, rank }[]
 }
 categorize(score, settings) → 'sangat_perlu' | 'perlu' | 'pantau' | 'belum_perlu'
-nearBoundary(score, settings) → boolean      // |skor − batas kategori| ≤ 2
+nearBoundary(score, settings) → boolean      // |skor − batas kategori| ≤ 3
 allocate(ranking, storedAllocations, settings) → { code, units }[]
 estimateImpact(corridor, addedUnits) → { waitAfter, loadAfter }
 sensitivity(alternatives, baseCriteria, scenarios) → hasil per skenario
@@ -180,7 +180,7 @@ sensitivity(alternatives, baseCriteria, scenarios) → hasil per skenario
   - Desain dan laporan menulis −3,1 menit dengan angka per koridor yang sedikit berbeda (20 menit, 75%, 70%, 62%), karena angka di desain adalah ilustrasi. Website akan memakai hasil rumus, lalu teks laporan dan Figma disesuaikan.
 - Panel "Kenapa A4 paling perlu?" membandingkan nilai koridor teratas dengan rata-rata semua koridor per kriteria.
 - Tautan "Lihat detail perhitungan" membuka panel geser berisi matriks X, matriks R, bobot, V, peringkat, dan tab "Uji sensitivitas" (skenario S0–S5 seperti Tabel IX).
-- **Penanda "dekat batas":** koridor yang skornya berjarak ≤ 2 dari batas kategori diberi penanda. Ini mewujudkan saran di laporan.
+- **Penanda "dekat batas":** koridor yang skornya berjarak ≤ 3 dari batas kategori diberi penanda, sama dengan `BORDERLINE_MARGIN` di `analysis/saw.py`. Dengan data awal, A3 (75) dan A2 (70) ditandai, sesuai kesimpulan laporan. Ini mewujudkan saran di laporan.
 
 ## 10. Halaman dan perilaku
 
