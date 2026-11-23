@@ -1,7 +1,0 @@
-code,criterion,unit,weight,type
-C1,Passengers,people/day,0.25,benefit
-C2,Bus load (peak),%,0.20,benefit
-C3,Waiting time,minutes,0.20,benefit
-C4,Passenger complaints,reports/month,0.15,benefit
-C5,Fleet per route km,units/km,0.10,cost
-C6,Transit connectivity,scale 1-5,0.10,benefit

@@ -1,150 +1,164 @@
 """Simple Additive Weighting (SAW) for the WiraWiri fleet-priority decision.
 
-Reproduces Tables VI-IX of the report: decision matrix, normalised matrix,
-preference values, ranking with need categories, and the weight-sensitivity
-analysis. Standard library only.
+Reads the inputs (criteria, weights, categories, simulated corridor data and the
+weight scenarios) from saw-wirawiri.xlsx, recomputes Tables VII-IX of the report
+independently of the spreadsheet formulas, prints them, and checks that the values
+saved in the workbook match.
 
+    pip install openpyxl
     python analysis/saw.py
 
-Results are printed and written to analysis/results/*.csv.
+Exit code 1 means the workbook and this script disagree.
 """
 
-import csv
+import sys
 from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
-HERE = Path(__file__).resolve().parent
-DATA = HERE / "data"
-RESULTS = HERE / "results"
+from openpyxl import load_workbook
 
-# Need-score categories, as configured on the Pengaturan (Settings) screen.
-CATEGORIES = [  # (lower bound of score, label, proposed extra units)
-    (80, "Sangat perlu", "+2 to +4"),
-    (72, "Perlu", "+1"),
-    (55, "Pantau", "0"),
-    (0, "Belum perlu", "0"),
-]
-# Scores within this many points of a category boundary are flagged for review.
-BORDERLINE_MARGIN = 3
+WORKBOOK = Path(__file__).resolve().parent / "saw-wirawiri.xlsx"
 
 
-def load():
-    with open(DATA / "criteria.csv", newline="", encoding="utf-8") as f:
-        criteria = list(csv.DictReader(f))
-    for c in criteria:
-        c["weight"] = float(c["weight"])
-    with open(DATA / "corridors.csv", newline="", encoding="utf-8") as f:
-        rows = list(csv.DictReader(f))
-    cols = [k for k in rows[0] if k[:2] in {c["code"] for c in criteria}]
-    alternatives = {r["code"]: r["name"] for r in rows}
-    matrix = {r["code"]: [float(r[k]) for k in cols] for r in rows}
-    return criteria, alternatives, matrix
+def round_half_up(x, digits=0):
+    """Excel's ROUND: halves go away from zero (Python's round() goes to even)."""
+    q = Decimal(1).scaleb(-digits)
+    return float(Decimal(str(x)).quantize(q, rounding=ROUND_HALF_UP))
+
+
+def load(path):
+    wb = load_workbook(path)  # formulas as text: only the input cells are read
+    cr, da, se = wb["Criteria"], wb["Data"], wb["Sensitivity"]
+    criteria = [{"code": cr[f"A{r}"].value, "name": cr[f"B{r}"].value,
+                 "weight": float(cr[f"E{r}"].value), "type": cr[f"F{r}"].value} for r in range(5, 11)]
+    categories = [(cr[f"A{r}"].value, cr[f"C{r}"].value, cr[f"D{r}"].value) for r in range(15, 19)]
+    margin = cr["B20"].value
+    names, matrix = {}, {}
+    for r in range(5, 10):
+        code = da[f"A{r}"].value
+        names[code] = da[f"B{r}"].value
+        km, units = da[f"D{r}"].value, da[f"F{r}"].value
+        fleet_per_km = round_half_up(units / km, 2)  # same as =ROUND(F/D,2) in the Data sheet
+        matrix[code] = [da[f"G{r}"].value, da[f"H{r}"].value, da[f"I{r}"].value, da[f"J{r}"].value,
+                        fleet_per_km, da[f"L{r}"].value]
+    scen = [(se[f"A{r}"].value, se[f"B{r}"].value, se[f"E{r}"].value, se[f"F{r}"].value) for r in range(5, 11)]
+    return criteria, categories, margin, names, matrix, scen
 
 
 def normalise(criteria, matrix):
     """Benefit: x / max(x). Cost: min(x) / x."""
     n = len(criteria)
     col = [[v[j] for v in matrix.values()] for j in range(n)]
-    out = {}
-    for a, values in matrix.items():
-        out[a] = [
-            min(col[j]) / values[j] if criteria[j]["type"] == "cost" else values[j] / max(col[j])
-            for j in range(n)
-        ]
-    return out
+    return {a: [min(col[j]) / v[j] if criteria[j]["type"] == "cost" else v[j] / max(col[j]) for j in range(n)]
+            for a, v in matrix.items()}
 
 
-def preference(weights, normalised):
-    return {a: sum(w * r for w, r in zip(weights, row)) for a, row in normalised.items()}
+def preference(weights, R):
+    return {a: sum(w * r for w, r in zip(weights, row)) for a, row in R.items()}
 
 
 def score(v):
-    """Preference value shown in the UI as a 0-100 need score (half-up rounding)."""
-    return int(Decimal(str(v * 100)).quantize(Decimal("1"), rounding=ROUND_HALF_UP))
+    return int(round_half_up(v * 100))
 
 
-def category(s):
-    for lower, label, units in CATEGORIES:
-        if s >= lower:
-            return label, units
-    raise ValueError(s)
+def category(s, categories):
+    """Highest lower bound that is not above the score."""
+    return [c for c in categories if s >= c[0]][-1]
 
 
-def near_boundary(s):
-    bounds = [lower for lower, _, _ in CATEGORIES if lower > 0]
-    return any(abs(s - b) <= BORDERLINE_MARGIN for b in bounds)
+def near_boundary(s, categories, margin):
+    return any(abs(s - lower) <= margin for lower, _, _ in categories if lower > 0)
 
 
-def rescale(weights, k, new_wk):
-    """Change weight k and rescale the others proportionally so they still sum to 1."""
-    old = weights[k]
-    w = [wj * (1 - new_wk) / (1 - old) for wj in weights]
-    w[k] = new_wk
-    return w
+def scenario_weights(base, scen):
+    out = []
+    for code, desc, k, new_w in scen:
+        if code == "S0":
+            w = list(base)
+        elif code == "S1":
+            w = [1 / len(base)] * len(base)
+        else:  # change weight k, rescale the others so the total stays 1
+            k = int(k) - 1
+            w = [wj * (1 - new_w) / (1 - base[k]) for wj in base]
+            w[k] = new_w
+        out.append((code, desc, w))
+    return out
 
 
-def scenarios(weights):
-    n = len(weights)
-    return [
-        ("S0", "Base weights", weights),
-        ("S1", "Equal weights (1/6)", [1 / n] * n),
-        ("S2", "C1 raised to 0.35", rescale(weights, 0, 0.35)),
-        ("S3", "C3 raised to 0.30", rescale(weights, 2, 0.30)),
-        ("S4", "C4 removed (0)", rescale(weights, 3, 0.0)),
-        ("S5", "C5 raised to 0.20", rescale(weights, 4, 0.20)),
-    ]
+def check_workbook(path, R, V, sens):
+    """Compare with the values Excel saved in the workbook (needs a file last saved by Excel)."""
+    wb = load_workbook(path, data_only=True)
+    no, ra, se = wb["Normalisation"], wb["Ranking"], wb["Sensitivity"]
+    codes = list(R)
+    if ra["I5"].value is None:
+        return None, ["no saved values: open the workbook in Excel and save it, then run again"]
+    bad, n = [], 0
 
+    def same(label, got, want, tol=1e-9):
+        nonlocal n
+        n += 1
+        ok = (abs(got - want) <= tol) if isinstance(want, float) else got == want
+        if not ok:
+            bad.append(f"{label}: workbook {got!r}, script {want!r}")
 
-def write_csv(name, header, rows):
-    RESULTS.mkdir(exist_ok=True)
-    with open(RESULTS / name, "w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f)
-        w.writerow(header)
-        w.writerows(rows)
+    for i, a in enumerate(codes):
+        for j, col in enumerate("CDEFGH"):
+            same(f"Normalisation!{col}{10 + i}", no[f"{col}{10 + i}"].value, R[a][j])
+        same(f"Ranking!I{5 + i}", ra[f"I{5 + i}"].value, V[a])
+        same(f"Ranking!J{5 + i}", ra[f"J{5 + i}"].value, score(V[a]))
+    for s, (code, _, v) in enumerate(sens):
+        for i, a in enumerate(codes):
+            same(f"Sensitivity!{'GHIJK'[i]}{14 + s}", se[f"{'GHIJK'[i]}{14 + s}"].value, score(v[a]))
+    return n, bad
 
 
 def main():
-    criteria, names, matrix = load()
+    criteria, categories, margin, names, matrix, scen = load(WORKBOOK)
     codes = [c["code"] for c in criteria]
     weights = [c["weight"] for c in criteria]
     assert abs(sum(weights) - 1) < 1e-9, "weights must sum to 1"
 
     R = normalise(criteria, matrix)
     V = preference(weights, R)
-    ranking = sorted(V, key=V.get, reverse=True)
 
+    print(f"Source: {WORKBOOK.name}\n")
     print("Normalised matrix and preference values (Table VII)")
     print("Alt  " + "  ".join(f"{c:>5}" for c in codes) + "       V")
     for a in matrix:
         print(f"{a:<4} " + "  ".join(f"{r:5.3f}" for r in R[a]) + f"  {V[a]:.4f}")
 
     print("\nRanking (Table VIII)")
-    rank_rows = []
-    for i, a in enumerate(ranking, 1):
+    for i, a in enumerate(sorted(V, key=V.get, reverse=True), 1):
         s = score(V[a])
-        label, units = category(s)
-        flag = "review" if near_boundary(s) else ""
-        rank_rows.append([i, a, names[a], f"{V[a]:.4f}", s, label, units, flag])
-        print(f"{i}. {a} {names[a]:<24} V={V[a]:.4f}  score={s:>3}  {label:<12} {flag}")
+        _, label, units = category(s, categories)
+        flag = "review" if near_boundary(s, categories, margin) else ""
+        print(f"{i}. {a} {names[a]:<24} V={V[a]:.4f}  score={s:>3}  {label:<12} {units:<9} {flag}")
 
     print("\nSensitivity analysis (Table IX)")
-    sens_rows = []
-    for code, label, w in scenarios(weights):
+    base_order = sorted(V, key=V.get, reverse=True)
+    sens = []
+    for code, desc, w in scenario_weights(weights, scen):
         v = preference(w, R)
+        sens.append((code, desc, v))
         order = sorted(v, key=v.get, reverse=True)
-        cats = {a: category(score(v[a]))[0] for a in v}
-        gap_3_4 = v[order[2]] - v[order[3]]
-        sens_rows.append([code, label, " > ".join(order), f"{v['A4']:.4f}",
-                          score(v["A3"]), cats["A3"], score(v["A2"]), cats["A2"], f"{gap_3_4:.4f}"])
-        print(f"{code} {label:<20} {' > '.join(order)}  V(A4)={v['A4']:.4f}  "
-              f"A3={score(v['A3'])} ({cats['A3']})  A2={score(v['A2'])} ({cats['A2']})  gap 3rd-4th={gap_3_4:.4f}")
+        moved = [a for a in v if category(score(v[a]), categories)[1] != category(score(V[a]), categories)[1]]
+        note = "same order" if order == base_order else "ORDER CHANGES"
+        if moved:
+            note += "; category changes: " + ", ".join(
+                f"{a} {score(v[a])} ({category(score(v[a]), categories)[1]})" for a in moved)
+        print(f"{code} {desc:<32} {' > '.join(order)}  {note}")
 
-    write_csv("normalised.csv", ["code"] + codes + ["V"],
-              [[a] + [f"{r:.4f}" for r in R[a]] + [f"{V[a]:.4f}"] for a in matrix])
-    write_csv("ranking.csv", ["rank", "code", "corridor", "V", "score", "category", "proposed_units", "flag"], rank_rows)
-    write_csv("sensitivity.csv", ["scenario", "description", "ranking", "V_A4", "score_A3", "category_A3",
-                                  "score_A2", "category_A2", "gap_rank3_rank4"], sens_rows)
-    print(f"\nCSV files written to {RESULTS}")
+    n, bad = check_workbook(WORKBOOK, R, V, sens)
+    print()
+    if n is None:
+        print("Workbook check skipped:", bad[0])
+    elif bad:
+        print(f"Workbook check FAILED: {len(bad)} of {n} values differ")
+        for b in bad:
+            print("  " + b)
+        sys.exit(1)
+    else:
+        print(f"Workbook check passed: all {n} values match the spreadsheet formulas.")
 
 
 if __name__ == "__main__":

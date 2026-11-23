@@ -1,6 +1,0 @@
-code,name,C1_passengers_per_day,C2_bus_load_pct,C3_wait_min,C4_complaints_per_month,C5_fleet_per_km,C6_transit_links
-A1,Benowo - TP,520,92,25,18,0.45,5
-A2,Puspa Agro - DTC,410,85,20,12,0.60,4
-A3,Sungkono - Kenjeran,300,70,30,20,0.40,3
-A4,Bratang - Joyoboyo,610,95,28,25,0.50,5
-A5,Joyoboyo - Lakarsantri,250,60,15,6,0.70,2

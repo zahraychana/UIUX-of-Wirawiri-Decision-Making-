@@ -12,7 +12,7 @@ It combines daily operations monitoring with a Decision Support System based on 
 | **Scope** | 7 pages + 4 sub-views, desktop 1280 px, high-fidelity in Figma |
 | **Decision model** | SAW, 5 corridors × 6 criteria, plus weight-sensitivity analysis |
 | **Evaluation** | Heuristic inspection against Nielsen's 10 usability heuristics |
-| **Deliverables** | [Report (PDF, Indonesian)](report/laporan-wirawiri-spk-saw.pdf) · [Figma file](https://www.figma.com/design/gAYZEz2JXkJzd2NWhkJvwu/Dashboard-SPK--Copy-?node-id=0-1) · [SAW script](analysis/saw.py) · [SAW spreadsheet](analysis/saw_model.xlsx) · [Design decision log](docs/design-decisions.md) |
+| **Deliverables** | [Report (PDF, Indonesian)](report/laporan-wirawiri-spk-saw.pdf) · [Figma file](https://www.figma.com/design/gAYZEz2JXkJzd2NWhkJvwu/Dashboard-SPK--Copy-?node-id=0-1) · [Interactive prototype](src/index.html) · [Dataset and SAW workbook](analysis/saw-wirawiri.xlsx) · [SAW check script](analysis/saw.py) · [Design decision log](docs/design-decisions.md) |
 
 > **Note:** This is an academic concept. It is not affiliated with or endorsed by Dinas Perhubungan Kota Surabaya. All operational data is simulated, and the names shown in the UI are fictional.
 
@@ -89,9 +89,21 @@ The full log, with the alternatives considered and the reasoning, is in [docs/de
 | ![Peta Rute](design/screens/02-peta-rute.png) **Peta Rute**: schematic map coloured by service status, with segment filters | ![Data Koridor](design/screens/03-data-koridor.png) **Data Koridor**: master data; six columns are the SAW decision matrix |
 | ![Tambah Koridor](design/screens/03a-tambah-koridor.png) **Add corridor**: three-step form, auto-fill from the route file, required-field markers | ![Rekomendasi Armada](design/screens/04-rekomendasi-armada.png) **Rekomendasi Armada**: the core of the DSS, with conclusion, ranking, reasons, weights and expected impact |
 | ![Laporan](design/screens/05-laporan.png) **Laporan**: official decision sheet ready for approval, PDF/Excel export | ![Semua Arsip](design/screens/05a-laporan-semua-arsip.png) **Archive**: all decision documents with status and type filters |
-| ![Pengaturan](design/screens/06-pengaturan.png) **Pengaturan**: weight sliders with live result preview, service thresholds, score categories, data sources | |
+| ![Pengaturan](design/screens/06-pengaturan.png) **Pengaturan**: weight sliders with live result preview, service thresholds, score categories, data sources | ![Detail Perhitungan](design/screens/04a-rekomendasi-detail-perhitungan.png) **Detail Perhitungan**: the SAW steps, factor contributions per corridor, the full calculation table and a stability check |
 
 Source SVGs are in [`design/svg/`](design/svg). The layouts use [Poppins](https://fonts.google.com/specimen/Poppins).
+
+## Interactive prototype
+
+[`src/`](src) is a clickable prototype of the whole flow, in three files and with no install or build step:
+
+| File | Contents |
+|---|---|
+| `src/index.html` | App shell (sidebar and top bar) and all styles, using the Figma tokens |
+| `src/saw.js` | Simulated dataset and the SAW method: normalisation, score, category, allocation, sensitivity |
+| `src/app.js` | Every screen, navigation and interaction |
+
+Open `src/index.html` in a browser (the demo account is pre-filled). The SAW logic is live: move a weight in **Pengaturan**, save, and the ranking in **Rekomendasi Armada**, **Detail Perhitungan**, the Dashboard and the report all recalculate. Approving a recommendation freezes its calculation in the report, so later weight changes do not alter it. `saw.js` produces the same numbers as the workbook (97/87/75/70/46).
 
 ## Decision model: Simple Additive Weighting
 
@@ -144,11 +156,23 @@ The UI should therefore flag corridors whose score is close to a category bounda
 
 ### Reproduce it
 
-```bash
-python analysis/saw.py        # Python 3.8+, standard library only
-```
+The simulated dataset and the whole SAW calculation live in one workbook, [`analysis/saw-wirawiri.xlsx`](analysis/saw-wirawiri.xlsx), with one sheet per step and live formulas:
 
-The script prints Tables VII–IX of the report and writes [`analysis/results/`](analysis/results). The same model is in [`analysis/saw_model.xlsx`](analysis/saw_model.xlsx) with live formulas: change a weight or a matrix value on the *Inputs* sheet, and the ranking and sensitivity sheets recalculate.
+| Sheet | Contents |
+|---|---|
+| About | Sheet guide, method, colour legend and the key result |
+| Criteria | Six criteria, weights, benefit/cost type, need-score categories, borderline margin |
+| Data | Step 1: decision matrix for the 5 corridors (simulated) |
+| Normalisation | Step 2: benchmark per criterion and the 0–1 matrix (Table VII) |
+| Ranking | Steps 3–4: contribution points, V, score, category, rank (Table VIII) |
+| Sensitivity | Six weight scenarios (Table IX) |
+
+Change a blue input cell (a weight, a corridor value or a scenario) and every sheet recalculates. To check the workbook independently of its formulas:
+
+```bash
+pip install openpyxl
+python analysis/saw.py        # prints Tables VII–IX and compares them with the workbook
+```
 
 ## Traceability: no black box
 
@@ -211,10 +235,9 @@ The design was inspected against Nielsen's 10 usability heuristics. **6 are full
 │   ├── screens/                  PNG exports of every screen (2x)
 │   └── svg/                      source SVGs (text outlined; Login has two animation frames)
 ├── analysis/
-│   ├── saw.py                    reproducible SAW and sensitivity analysis
-│   ├── saw_model.xlsx            the same model with live Excel formulas
-│   ├── data/                     decision matrix and criteria (CSV)
-│   └── results/                  generated outputs (CSV)
+│   ├── saw-wirawiri.xlsx         simulated dataset + SAW calculation, one sheet per step
+│   └── saw.py                    recomputes the model from the workbook and checks it
+├── src/                          clickable prototype: index.html, saw.js, app.js
 └── report/
     ├── laporan-wirawiri-spk-saw.pdf    full report (Indonesian)
     └── laporan-wirawiri-spk-saw.docx
