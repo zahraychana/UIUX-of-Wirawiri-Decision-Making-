@@ -7,6 +7,7 @@ It combines daily operations monitoring with a Decision Support System based on 
 
 | | |
 |---|---|
+| **Credit** | Raychana Maharani Zahra · [zahraychana@gmail.com](mailto:zahraychana@gmail.com) |
 | **Role** | UI/UX designer and decision analyst (solo) |
 | **Context** | Course project, Decision Support Systems, Department of Mathematics, Institut Teknologi Sepuluh Nopember (ITS), 2026 |
 | **Scope** | 7 pages + 4 sub-views, desktop 1280 px, high-fidelity in Figma |
@@ -246,5 +247,6 @@ The design was inspected against Nielsen's 10 usability heuristics. **6 are full
 ## Author
 
 **Raychana Maharani Zahra**, Department of Mathematics, Institut Teknologi Sepuluh Nopember.
+Credit by [zahraychana@gmail.com](mailto:zahraychana@gmail.com). The same credit appears at the bottom left of the prototype's sidebar.
 
 The Dishub Surabaya logo and name are used only to make this academic mock-up realistic. Poppins is licensed under the SIL Open Font License.
