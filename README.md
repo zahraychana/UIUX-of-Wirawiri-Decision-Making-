@@ -99,7 +99,6 @@ The full log, with the alternatives considered and the reasoning, is in [docs/de
 | ![Konfirmasi](design/desktop/screens/04b-rekomendasi-konfirmasi.png) **Approval confirmation**: summary of what will be approved, borderline warning, calculation freeze notice | ![Riwayat](design/desktop/screens/04d-rekomendasi-riwayat.png) **Riwayat Kebutuhan**: score trend June–November with category bands, month × corridor table, automatic notes |
 | ![Pilih periode](design/desktop/screens/04e-rekomendasi-pilih-periode.png) **Period selector**: six months; past months open read-only with a link to the archive | ![Memuat](design/desktop/screens/04c-rekomendasi-memuat.png) **Loading**: skeleton while a period loads |
 | ![Sinkron gagal](design/desktop/screens/03c-data-koridor-sinkron-gagal.png) **Sync failed**: last good data stays visible, retry button | ![Galat form](design/desktop/screens/03b-tambah-koridor-galat.png) **Form errors**: inline messages (duplicate code, same start and end stop, missing length) |
-| ![Tidak ditemukan](design/desktop/screens/03d-data-koridor-tidak-ditemukan.png) **Empty search result** with a hint | |
 
 Every design carries the same watermark, `zahraychana@gmail.com`, in the bottom-left corner. Mobile designs are kept separately in [`design/mobile/`](design/mobile).
 
