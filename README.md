@@ -13,7 +13,7 @@ It combines daily operations monitoring with a Decision Support System based on 
 | **Scope** | 7 pages + 4 sub-views, desktop 1280 px, high-fidelity in Figma |
 | **Decision model** | SAW, 5 corridors × 6 criteria, plus weight-sensitivity analysis |
 | **Evaluation** | Heuristic inspection against Nielsen's 10 usability heuristics |
-| **Deliverables** | [Report (PDF, Indonesian)](report/laporan-wirawiri-spk-saw.pdf) · [Figma file](https://www.figma.com/design/gAYZEz2JXkJzd2NWhkJvwu/Dashboard-SPK--Copy-?node-id=0-1) · [Interactive prototype](src/index.html) · [Dataset and SAW workbook](analysis/saw-wirawiri.xlsx) · [SAW check script](analysis/saw.py) · [Design decision log](docs/design-decisions.md) |
+| **Deliverables** | [Report (PDF, Indonesian)](report/laporan-wirawiri.pdf) · [Figma file](https://www.figma.com/design/gAYZEz2JXkJzd2NWhkJvwu/Dashboard-SPK--Copy-?node-id=0-1) · [Interactive prototype](src/index.html) · [Dataset and SAW workbook](analysis/saw-wirawiri.xlsx) · [SAW check script](analysis/saw.py) · [Design decision log](docs/design-decisions.md) |
 
 > **Note:** This is an academic concept. It is not affiliated with or endorsed by Dinas Perhubungan Kota Surabaya. All operational data is simulated, and the names shown in the UI are fictional.
 
@@ -85,14 +85,25 @@ The full log, with the alternatives considered and the reasoning, is in [docs/de
 
 | | |
 |---|---|
-| ![Login](design/screens/00-login.png) **Login**: animated intro (the bus pulls up onto the route map), staff-only access with official email or NIP, show/hide password | ![Dashboard](design/screens/01-dashboard.png) **Dashboard**: KPIs with targets, 8-week trend, corridor performance vs. service standard, alerts, recommendation preview |
-| ![Dashboard slide-over: corridor data](design/screens/01a-dashboard-slide-data-koridor.png) **Slide-over: corridor data**: six criteria per corridor without leaving the Dashboard | ![Dashboard slide-over: recommendation](design/screens/01b-dashboard-slide-rekomendasi-armada.png) **Slide-over: recommendation**: ranking and expected impact |
-| ![Peta Rute](design/screens/02-peta-rute.png) **Peta Rute**: schematic map coloured by service status, with segment filters | ![Data Koridor](design/screens/03-data-koridor.png) **Data Koridor**: master data; six columns are the SAW decision matrix |
-| ![Tambah Koridor](design/screens/03a-tambah-koridor.png) **Add corridor**: three-step form, auto-fill from the route file, required-field markers | ![Rekomendasi Armada](design/screens/04-rekomendasi-armada.png) **Rekomendasi Armada**: the core of the DSS, with conclusion, ranking, reasons, weights and expected impact |
-| ![Laporan](design/screens/05-laporan.png) **Laporan**: official decision sheet ready for approval, PDF/Excel export | ![Semua Arsip](design/screens/05a-laporan-semua-arsip.png) **Archive**: all decision documents with status and type filters |
-| ![Pengaturan](design/screens/06-pengaturan.png) **Pengaturan**: weight sliders with live result preview, service thresholds, score categories, data sources | ![Detail Perhitungan](design/screens/04a-rekomendasi-detail-perhitungan.png) **Detail Perhitungan**: the SAW steps, factor contributions per corridor, the full calculation table and a stability check |
+| ![Login](design/desktop/screens/00-login.png) **Login**: animated intro (the bus pulls up onto the route map), staff-only access with official email or NIP, show/hide password | ![Dashboard](design/desktop/screens/01-dashboard.png) **Dashboard**: KPIs with targets, 8-week trend, corridor performance vs. service standard, alerts, recommendation preview |
+| ![Dashboard slide-over: corridor data](design/desktop/screens/01a-dashboard-slide-data-koridor.png) **Slide-over: corridor data**: six criteria per corridor without leaving the Dashboard | ![Dashboard slide-over: recommendation](design/desktop/screens/01b-dashboard-slide-rekomendasi-armada.png) **Slide-over: recommendation**: ranking and expected impact |
+| ![Peta Rute](design/desktop/screens/02-peta-rute.png) **Peta Rute**: schematic map coloured by service status, with segment filters | ![Data Koridor](design/desktop/screens/03-data-koridor.png) **Data Koridor**: master data; six columns are the SAW decision matrix |
+| ![Tambah Koridor](design/desktop/screens/03a-tambah-koridor.png) **Add corridor**: three-step form, auto-fill from the route file, required-field markers | ![Rekomendasi Armada](design/desktop/screens/04-rekomendasi-armada.png) **Rekomendasi Armada**: the core of the DSS, with conclusion, ranking, reasons, weights and expected impact; each row shows its score trend since June and links to Riwayat Kebutuhan |
+| ![Laporan](design/desktop/screens/05-laporan.png) **Laporan**: official decision sheet ready for approval, PDF/Excel export | ![Semua Arsip](design/desktop/screens/05a-laporan-semua-arsip.png) **Archive**: all decision documents with status and type filters |
+| ![Pengaturan](design/desktop/screens/06-pengaturan.png) **Pengaturan**: weight sliders with live result preview, service thresholds, score categories, data sources | ![Detail Perhitungan](design/desktop/screens/04a-rekomendasi-detail-perhitungan.png) **Detail Perhitungan**: the SAW steps, factor contributions per corridor, the full calculation table, the stability check and the random-weight simulation |
 
-Source SVGs are in [`design/svg/`](design/svg). The layouts use [Poppins](https://fonts.google.com/specimen/Poppins).
+### States (added after evaluation)
+
+| | |
+|---|---|
+| ![Konfirmasi](design/desktop/screens/04b-rekomendasi-konfirmasi.png) **Approval confirmation**: summary of what will be approved, borderline warning, calculation freeze notice | ![Riwayat](design/desktop/screens/04d-rekomendasi-riwayat.png) **Riwayat Kebutuhan**: score trend June–November with category bands, month × corridor table, automatic notes |
+| ![Pilih periode](design/desktop/screens/04e-rekomendasi-pilih-periode.png) **Period selector**: six months; past months open read-only with a link to the archive | ![Memuat](design/desktop/screens/04c-rekomendasi-memuat.png) **Loading**: skeleton while a period loads |
+| ![Sinkron gagal](design/desktop/screens/03c-data-koridor-sinkron-gagal.png) **Sync failed**: last good data stays visible, retry button | ![Galat form](design/desktop/screens/03b-tambah-koridor-galat.png) **Form errors**: inline messages (duplicate code, same start and end stop, missing length) |
+| ![Tidak ditemukan](design/desktop/screens/03d-data-koridor-tidak-ditemukan.png) **Empty search result** with a hint | |
+
+Every design carries the same watermark, `zahraychana@gmail.com`, in the bottom-left corner. Mobile designs are kept separately in [`design/mobile/`](design/mobile).
+
+Source SVGs are in [`design/desktop/svg/`](design/desktop/svg). The layouts use [Poppins](https://fonts.google.com/specimen/Poppins).
 
 ## Interactive prototype
 
@@ -153,7 +164,25 @@ The **ranking never changes**, so the priority for A4 and A1 is safe to act on. 
 - In S2, A3 drops to exactly 72.
 - In S4, A2 rises to 74 and joins the Perlu category. It is only 0.0039 behind A3 in preference value, so it would also qualify for an extra bus.
 
-The UI should therefore flag corridors whose score is close to a category boundary, and leave those calls to the decision maker. This is the main improvement planned for the next iteration.
+The UI therefore flags corridors whose score is close to a category boundary and leaves those calls to the decision maker.
+
+### Random-weight simulation
+
+The six scenarios change one weight at a time. A wider test multiplies **every** weight by a random factor between 0.5 and 1.5, renormalises, and re-ranks, 1,000 times (seeded generator, identical in `saw.js` and `saw.py`):
+
+| Corridor | Same rank | Same category | Score range |
+|---|---|---|---|
+| A4 | 100% | 100% | 95–98 |
+| A1 | 100% | 100% | 84–90 |
+| A3 | 93.9% | 85.5% | 68–82 |
+| A2 | 93.9% | 83.1% | 66–74 |
+| A5 | 100% | 100% | 42–51 |
+
+The full order holds in 93.9% of runs. Only A3 and A2 ever swap, which confirms the borderline flag.
+
+### Monthly history
+
+The History sheet holds simulated monthly averages for June–November 2026. With the same weights, A3 rises from 65 (Pantau) to 75 (Perlu) and overtakes A2 in September, so the proposal grows from +6 to +7 buses. The prototype shows this on the **Riwayat Kebutuhan** page and every period-aware screen follows the period selector.
 
 ### Reproduce it
 
@@ -167,12 +196,13 @@ The simulated dataset and the whole SAW calculation live in one workbook, [`anal
 | Normalisation | Step 2: benchmark per criterion and the 0–1 matrix (Table VII) |
 | Ranking | Steps 3–4: contribution points, V, score, category, rank (Table VIII) |
 | Sensitivity | Six weight scenarios (Table IX) |
+| History | June–November 2026 data and the score of each month |
 
 Change a blue input cell (a weight, a corridor value or a scenario) and every sheet recalculates. To check the workbook independently of its formulas:
 
 ```bash
 pip install openpyxl
-python analysis/saw.py        # prints Tables VII–IX and compares them with the workbook
+python analysis/saw.py        # Tables VII–IX, monthly scores, random-weight simulation, workbook check
 ```
 
 ## Traceability: no black box
@@ -194,12 +224,23 @@ flowchart LR
 
 The design was inspected against Nielsen's 10 usability heuristics. **6 are fully met and 4 are partly met.**
 
-| Partly met | Gap | Planned fix |
+| Partly met | Gap | Status |
 |---|---|---|
-| Error prevention | No confirmation before "Setujui & Buat Laporan" (approve and create report) | Confirmation dialog summarising what will be approved |
-| Help users recover from errors | No error messages for invalid form input | Inline validation states for the Add Corridor and Login forms |
-| Flexibility and efficiency | Desktop only | Responsive layout for field staff |
-| Help and documentation | No help page | Help centre and glossary of criteria |
+| Error prevention | No confirmation before "Setujui & Buat Laporan" (approve and create report) | **Fixed**: confirmation dialog (04b) |
+| Help users recover from errors | No error messages for invalid form input | **Fixed**: inline errors (03b), sync-failed banner with retry (03c) |
+| Flexibility and efficiency | Desktop only | **Fixed**: responsive prototype for tablet and phone |
+| Help and documentation | No help page | Open: help centre and glossary of criteria |
+
+### Iteration after evaluation
+
+| Before | After |
+|---|---|
+| Approve button created the report immediately | Confirmation dialog with units, total fleet and borderline warning |
+| Period selector showed only November | Six months, period-aware pages, Riwayat Kebutuhan trend page |
+| Robustness shown by six one-at-a-time scenarios | Plus a 1,000-run random-weight simulation |
+| No loading, empty, error or offline states | Skeleton, empty search, inline form errors, sync-failed and offline banners |
+| Desktop only, min-width 1180 px | Tablet and phone layouts with off-canvas menu |
+| 18 of 27 colour pairs below WCAG AA, 10 px text | All pairs pass, 11 px minimum, skip link, reduced motion ([audit](docs/accessibility.md)) |
 
 ## Limitations
 
@@ -210,8 +251,8 @@ The design was inspected against Nielsen's 10 usability heuristics. **6 are full
 ## Next steps
 
 1. Usability testing with Dishub staff using the System Usability Scale (SUS).
-2. Flag scores near a category boundary and add a scenario-simulation mode that does not change the active weights.
-3. Fix the four partly met heuristics.
+2. Add a scenario-simulation mode that does not change the active weights.
+3. Add a help centre and glossary (the last partly met heuristic).
 4. Replace simulated data with GPS and e-ticket feeds.
 
 ## Design system
@@ -219,10 +260,11 @@ The design was inspected against Nielsen's 10 usability heuristics. **6 are full
 | Element | Specification |
 |---|---|
 | Primary colours | Navy `#0F2D4E`, blue `#2F64A0`, text `#1B2A3A`, background `#F1F5FA` |
-| Status colours | Red `#C83A44` Kritis, amber `#E2A23B` Waspada, green `#2F8F5B` Normal |
+| Status colours | Red `#C43741` Kritis, amber `#E2A23B` bar / `#986410` text Waspada, green `#287A4E` Normal |
+| Text | Secondary `#606D7D`, placeholder `#5F7288`, field border `#808FA5` (all WCAG AA, see [audit](docs/accessibility.md)) |
 | Typography | Poppins: page title 28 px bold, card title 16 px, body 13–14 px |
 | Components | KPI card, status chip, data table, progress bar, button, segmented filter, slide-over panel, modal form, checkbox and password-visibility toggle (with state variants) |
-| Layout | 1280 px frame, 260 px sidebar, 72 px header, card-based content |
+| Layout | 1280 px frame, 260 px sidebar, 72 px header, card-based content; 390 px mobile frame below 640 px |
 
 ## Repository structure
 
@@ -231,17 +273,21 @@ The design was inspected against Nielsen's 10 usability heuristics. **6 are full
 ├── README.md                     case study (this file)
 ├── docs/
 │   ├── design-decisions.md       decision log: context, options, choice, rationale
+│   ├── accessibility.md          WCAG contrast audit, before/after
+│   ├── cover.png                 Behance/LinkedIn cover (1600×1200)
 │   └── hero.png
 ├── design/
-│   ├── screens/                  PNG exports of every screen (2x)
-│   └── svg/                      source SVGs (text outlined; Login has two animation frames)
+│   ├── desktop/
+│   │   ├── screens/              PNG exports of every screen (2x)
+│   │   └── svg/                  source SVGs (text outlined; Login has two animation frames)
+│   └── mobile/                   mobile designs (kept separately)
 ├── analysis/
 │   ├── saw-wirawiri.xlsx         simulated dataset + SAW calculation, one sheet per step
 │   └── saw.py                    recomputes the model from the workbook and checks it
 ├── src/                          clickable prototype: index.html, saw.js, app.js
 └── report/
-    ├── laporan-wirawiri-spk-saw.pdf    full report (Indonesian)
-    └── laporan-wirawiri-spk-saw.docx
+    ├── laporan-wirawiri.pdf      full report (Indonesian)
+    └── laporan-wirawiri.docx
 ```
 
 ## Author

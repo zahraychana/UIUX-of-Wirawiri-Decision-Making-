@@ -91,6 +91,9 @@
     target: '<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5"/>',
     sunrise: '<path d="M4 18h16M6.5 18a5.5 5.5 0 0 1 11 0M12 3v6M9 6l3-3 3 3M3.5 13l1.5 1M20.5 13 19 14"/>',
     save: '<path d="M5 4h11.5L19 6.5V20H5z"/><path d="M8 4v5h7V4M8 20v-6.5h8V20"/>',
+    menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+    shuffle: '<path d="M4 7h3c4 0 6 10 10 10h3M4 17h3c1.6 0 2.8-1.2 3.8-2.8M14 9.8C15 8.3 16.2 7 18 7h2"/><path d="m18 4 3 3-3 3M18 14l3 3-3 3"/>',
+    wifi: '<path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M5 13a10 10 0 0 1 5-2.7M19 13a10 10 0 0 0-2-1.5M12 20h.01"/>',
     building: '<path d="M4 20V8l8-4 8 4v12"/><path d="M8 20v-6h8v6M8 10h8"/>',
     file2: '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/>',
   };
@@ -271,9 +274,9 @@
 </g></svg>`;
 
   /* ================================================================ 2. Konten simulasi untuk layar */
-  const RAMP = ['#1E4B78', '#2F64A0', '#4F86C6', '#79A6DA', '#A9C8EC', '#C9DCF2'];
+  const RAMP = ['#1E4B78', '#2F64A0', '#3C76BA', '#79A6DA', '#A9C8EC', '#C9DCF2'];
   const RAMP_INK = ['#fff', '#fff', '#fff', '#0F2D4E', '#0F2D4E', '#0F2D4E'];
-  const HEX = { red: '#C83A44', amber: '#E2A23B', blue: '#2F64A0', green: '#2F8F5B' };
+  const HEX = { red: '#C43741', amber: '#E2A23B', blue: '#2F64A0', green: '#287A4E' };
   const RANK_ORDER = ['A4', 'A1', 'A3', 'A2', 'A5'];
 
   const TREND = [['5 Okt', 1785], ['12 Okt', 1822], ['19 Okt', 1905], ['26 Okt', 1860], ['2 Nov', 1950], ['9 Nov', 2006], ['16 Nov', 2140], ['Hari ini', 2090]];
@@ -355,6 +358,7 @@
     corridors: S.CORRIDORS.map(c => ({ ...c })),
     newCorridors: [],
     weights: S.defaultWeights(),
+    period: '2026-11', // periode yang ditampilkan di Data Koridor, Rekomendasi, Detail
     weightsVersion: DEFAULT_VERSION,
     settings: { ...S.SETTINGS, recalc: 'daily' },
     draft: null,
@@ -375,13 +379,20 @@
       archive: { tab: 'all', q: '', year: 'all', status: 'all', page: 1 },
       notif: { load: true, wait: true, rec: true, approved: false },
       channels: { Dashboard: true, Email: true, SMS: false },
-      form: null, formErrors: {}, syncing: false,
+      form: null, formErrors: {}, syncing: false, loading: false, offline: !navigator.onLine, syncError: null,
     },
   };
 
   /* ================================================================ 4. Komponen kecil */
-  const calc = (weights = state.weights, settings = state.settings) =>
-    S.evaluate(state.corridors, weights, { maxExtraUnits: settings.maxExtraUnits });
+  const CURRENT = '2026-11';
+  const periodCorridors = (period = state.period) => S.corridorsFor(period, state.corridors);
+  const periodInfo = (period = state.period) => S.MONTHS.find(m => m.key === period);
+  const isCurrent = () => state.period === CURRENT;
+  const calcFor = (period, weights = state.weights, settings = state.settings) =>
+    S.evaluate(periodCorridors(period), weights, { maxExtraUnits: settings.maxExtraUnits });
+  // calc: periode yang dipilih (Data Koridor, Rekomendasi, Detail). calcNow: periode berjalan.
+  const calc = (weights, settings) => calcFor(state.period, weights, settings);
+  const calcNow = (weights, settings) => calcFor(CURRENT, weights, settings);
   const statusOf = c => S.status(c, state.settings);
   const catColor = cat => ({ red: 'var(--red)', amber: 'var(--amber-bar)', blue: 'var(--blue)', green: 'var(--green)' }[cat.tone]);
   const catBadge = cat => `<span class="badge t-${cat.tone}">${cat.label}</span>`;
@@ -405,7 +416,7 @@
 
   // Ringkasan perkiraan dampak dari usulan unit.
   function impactSummary(ev) {
-    const before = avg(state.corridors.map(c => c.wait));
+    const before = avg(ev.rows.map(r => r.corridor.wait));
     const after = avg(ev.ranked.map(r => S.impact(r.corridor, r.units).wait));
     return { before, after, delta: after - before };
   }
@@ -456,7 +467,8 @@
           </form>
           <div class="help">${ic('help', 18)} Butuh bantuan? <button type="button" data-action="toast" data-msg="Admin Dishub dapat dihubungi lewat ekstensi 2104 (contoh).">Hubungi Admin Dishub</button></div>
         </div>
-        <p class="login-foot">${ic('shield', 16)} Akses khusus pegawai Dinas Perhubungan Kota Surabaya</p>`;
+        <p class="login-foot">${ic('shield', 16)} Akses khusus pegawai Dinas Perhubungan Kota Surabaya</p>
+        <p class="login-note">Proyek akademik, bukan situs resmi Dinas Perhubungan Kota Surabaya. Data simulasi.</p>`;
   }
 
   PAGES.login = () => `<div class="login">
@@ -473,8 +485,8 @@
     const line = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ');
     const peak = TREND.reduce((b, p, i) => (p[1] > TREND[b][1] ? i : b), 0);
     const [px, py] = pts[peak];
-    const grid = [1600, 1800, 2000, 2200].map(v => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#E3E9F1" stroke-dasharray="4 4"/><text x="${L - 10}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#9AA8B8">${num(v)}</text>`).join('');
-    const labels = TREND.map(([l], i) => `<text x="${x(i)}" y="${H - 6}" text-anchor="middle" font-size="11" fill="${i === TREND.length - 1 ? '#0F2D4E' : '#6A788A'}" font-weight="${i === TREND.length - 1 ? 600 : 400}">${l}</text>`).join('');
+    const grid = [1600, 1800, 2000, 2200].map(v => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#E3E9F1" stroke-dasharray="4 4"/><text x="${L - 10}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#5F7288">${num(v)}</text>`).join('');
+    const labels = TREND.map(([l], i) => `<text x="${x(i)}" y="${H - 6}" text-anchor="middle" font-size="11" fill="${i === TREND.length - 1 ? '#0F2D4E' : '#606D7D'}" font-weight="${i === TREND.length - 1 ? 600 : 400}">${l}</text>`).join('');
     return `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Penumpang harian naik dari ${num(TREND[0][1])} menjadi ${num(TREND[TREND.length - 1][1])} dalam 8 minggu, puncak ${num(TREND[peak][1])} pada ${TREND[peak][0]}">
       <defs><linearGradient id="area" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2F64A0" stop-opacity=".22"/><stop offset="1" stop-color="#2F64A0" stop-opacity="0"/></linearGradient>
       <linearGradient id="ln" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#79A6DA"/><stop offset="1" stop-color="#1E4B78"/></linearGradient></defs>
@@ -489,7 +501,7 @@
   }
 
   PAGES.dashboard = () => {
-    const cs = state.corridors, st = state.settings, ev = calc();
+    const cs = state.corridors, st = state.settings, ev = calcNow();
     const pax = sum(cs.map(c => c.passengers)), active = sum(cs.map(c => c.active)), units = sum(cs.map(c => c.units));
     const wait = avg(cs.map(c => c.wait)), load = avg(cs.map(c => c.load));
     const maint = UNITS.filter(u => u.status === 'Perawatan').length, reserve = UNITS.filter(u => u.status === 'Cadangan').length;
@@ -507,6 +519,7 @@
     return `
     ${pageHead('Dashboard Operasional', 'Ringkasan layanan feeder WiraWiri Suroboyo · Jumat, 20 November 2026',
       `<span class="meta-note">${ic('refresh', 16)} Diperbarui ${state.ui.lastSync} WIB</span><button class="btn" data-action="dashboard-csv">${ic('download', 16)} Unduh Ringkasan</button>`)}
+    ${todayNote()}${syncBanner()}
     <div class="grid g-4">
       ${kpi('users', 'Penumpang Hari Ini', num(pax), 'orang', `<span class="up">${wow >= 0 ? '▲' : '▼'} ${num(Math.abs(wow), 1)}%</span> dari minggu lalu`, true)}
       ${kpi('bus', 'Armada Beroperasi', `${active}/${units}`, 'unit', `${maint} perawatan · ${reserve} cadangan`)}
@@ -591,9 +604,10 @@
     const chip = (k, label) => `<button class="chip ${u.mapFilter === k ? 'is-active' : ''}" data-action="map-filter" data-key="${k}" aria-pressed="${u.mapFilter === k}">${label} (${counts[k]})</button>`;
     return `
     ${pageHead('Peta Rute &amp; Koridor', 'Posisi armada dan kondisi layanan tiap koridor secara langsung')}
+    ${todayNote()}
     <div class="grid g-side">
       <section class="card pad">
-        <div class="between"><div class="chips tight">${chip('all', 'Semua')}${chip('kritis', 'Kritis')}${chip('waspada', 'Waspada')}${chip('normal', 'Normal')}</div>
+        <div class="between wrap-sm"><div class="chips tight">${chip('all', 'Semua')}${chip('kritis', 'Kritis')}${chip('waspada', 'Waspada')}${chip('normal', 'Normal')}</div>
           <label class="switch-label"><input type="checkbox" class="switch" data-change="map-fleet" ${u.mapFleet ? 'checked' : ''}> Tampilkan armada</label></div>
         <div class="map-wrap">${mapSvg({ filter: u.mapFilter, fleet: u.mapFleet, selected: u.mapSelected, zoom: u.zoom })}
           <div class="map-legend"><b>Kondisi layanan</b>
@@ -614,8 +628,8 @@
     </div>
     <section class="card pad">${cardHead('pin', 'Halte Tersibuk Saat Jam Sibuk', `Rata-rata penumpang naik per jam, pukul ${state.settings.peak} WIB`)}
       <div class="grid g-4 mt-20">${BUSY_STOPS.map(([n, l, v]) => { const over = v > STOP_CAPACITY; return `
-        <div class="stop-card ${over ? 'over' : ''}"><div class="between"><b>${n}</b><span class="small muted strong">${l}</span></div>
-          <div class="between mt-8"><span><span class="num-big">${v}</span> <span class="muted small">orang/jam</span></span>${over ? '<span class="small strong c-red">Melebihi kapasitas</span>' : ''}</div>
+        <div class="stop-card ${over ? 'over' : ''}"><div class="between wrap-sm"><b>${n}</b><span class="small muted strong">${l}</span></div>
+          <div class="between wrap-sm mt-8"><span><span class="num-big">${v}</span> <span class="muted small">orang/jam</span></span>${over ? '<span class="small strong c-red">Melebihi kapasitas</span>' : ''}</div>
           <div class="bar"><i style="width:${Math.min(100, (v / 200) * 100)}%"></i></div></div>`; }).join('')}</div>
     </section>`;
   };
@@ -624,16 +638,17 @@
   PAGES.koridor = () => {
     const q = state.ui.koridorQuery.trim().toLowerCase();
     const match = c => !q || `${c.code} ${c.name} ${c.group} ${c.from} ${c.to}`.toLowerCase().includes(q);
-    const cs = state.corridors.filter(match), added = state.newCorridors.filter(match);
-    const all = state.corridors, st = state.settings;
+    const cs = periodCorridors().filter(match), added = state.newCorridors.filter(match);
+    const all = periodCorridors(), st = state.settings;
     const units = state.ui.showAllUnits ? UNITS : UNITS.slice(0, 6);
     const ub = { Perawatan: 't-amber', Cadangan: 't-grey', Beroperasi: 't-green' };
     return `
     ${pageHead('Data Koridor', 'Data induk dan rata-rata bulanan 5 koridor feeder WiraWiri Suroboyo',
       `<button class="btn" data-action="toast" data-msg="Impor CSV atau KML tidak aktif di prototype. Gunakan Tambah Koridor untuk mencoba alur input.">${ic('upload', 16)} Impor Data</button><a class="btn btn-primary" href="#/koridor/tambah">${ic('plus', 16)} Tambah Koridor</a>`)}
+    ${periodBanner()}${syncBanner()}
     <div class="banner">${ic('info', 20)} Data rata-rata bulan ini dipakai otomatis untuk menyusun Rekomendasi Armada.<span class="meta"><span>${ic('refresh', 15)} Sinkron ${state.ui.lastSync} WIB</span></span></div>
     <section class="card">
-      <div class="pad-x">${cardHead('database', 'Daftar Koridor Feeder', 'Rata-rata bulan November 2026',
+      <div class="pad-x">${cardHead('database', 'Daftar Koridor Feeder', `Rata-rata bulan ${periodInfo().label}`,
         `<label class="search" style="width:280px">${ic('search', 18)}<input id="koridor-q" data-input="koridor-q" value="${esc(state.ui.koridorQuery)}" placeholder="Cari kode atau nama rute…" aria-label="Cari kode atau nama rute"></label>`)}</div>
       <div class="tbl-wrap"><table class="tbl compact tight nowrap">
         <thead><tr><th>Kode</th><th>Nama rute &amp; koridor</th><th class="num">Panjang</th><th class="num">Halte</th><th class="num">Unit</th><th class="num">Penumpang</th><th class="num">Kepadatan</th><th class="num">Tunggu</th><th class="num">Keluhan</th><th class="num">Armada/km</th><th class="num">Transit</th></tr></thead>
@@ -687,17 +702,20 @@
 
   PAGES.rekomendasi = () => {
     const ev = calc(), top = ev.ranked[0], prio = ev.ranked.filter(r => r.units > 0);
-    const imp = impactSummary(ev), fleet = sum(state.corridors.map(c => c.units));
+    const imp = impactSummary(ev), fleet = sum(state.corridors.map(c => c.units)), trend = firstMonthScores();
     const why = whyTop(ev), st = state.settings;
     return `
-    ${pageHead('Rekomendasi Armada', 'Koridor yang paling membutuhkan tambahan armada, periode November 2026',
-      `<a class="btn" href="#/pengaturan">${ic('sliders', 16)} Atur Faktor</a><button class="btn btn-primary" data-action="approve">${ic('check-circle', 16)} Setuju &amp; Buat Laporan</button>`)}
+    ${pageHead('Rekomendasi Armada', `Koridor yang paling membutuhkan tambahan armada, periode ${periodInfo().label}`,
+      `<a class="btn" href="#/pengaturan">${ic('sliders', 16)} Atur Faktor</a>${isCurrent()
+        ? `<a class="btn btn-primary" href="#/rekomendasi/setuju">${ic('check-circle', 16)} Setuju &amp; Buat Laporan</a>`
+        : `<a class="btn btn-primary" href="#/laporan/arsip">${ic('archive', 16)} Lihat Arsip</a>`}`)}
+    ${periodBanner()}
     ${weightsChanged() ? `<div class="banner warn">${ic('alert', 20)} Bobot faktor sudah diubah (${esc(state.weightsVersion)}). Urutan di bawah memakai bobot baru.<span class="meta"><a class="btn-link" href="#/pengaturan">Lihat Pengaturan</a></span></div>` : ''}
     <section class="hero">
-      <div><span class="over">REKOMENDASI BULAN INI</span>
+      <div><span class="over">${isCurrent() ? 'REKOMENDASI BULAN INI' : `REKOMENDASI ${periodInfo().label.toUpperCase()}`}</span>
         <h2>${ev.totalUnits ? `Tambah ${ev.totalUnits} unit armada` : 'Belum perlu tambahan armada'}</h2>
         <p>${ev.totalUnits ? `Untuk ${prio.length} koridor, dimulai dari ${top.code} ${top.corridor.name} (+${top.units} unit).` : 'Semua koridor berada di kategori Pantau atau Belum perlu.'}
-        <small>Diperbarui otomatis dari data operasional, 20 Nov 2026 pukul ${state.ui.lastSync} WIB.</small></p></div>
+        <small>${isCurrent() ? `Diperbarui otomatis dari data operasional, 20 Nov 2026 pukul ${state.ui.lastSync} WIB.` : `Rekomendasi periode ${periodInfo().label} sudah disahkan dan tersimpan di arsip.`}</small></p></div>
       <div class="hero-stats">
         <div><b>${prio.length}</b><span>koridor prioritas</span></div>
         <div><b>${imp.delta < 0 ? '−' : ''}${num(Math.abs(imp.delta), 1)} mnt</b><span>rata-rata waktu tunggu</span></div>
@@ -705,7 +723,7 @@
       </div>
     </section>
     <div class="grid g-side">
-      <section class="card pad">${cardHead('list', 'Urutan Kebutuhan Armada', 'Dari koridor yang paling membutuhkan')}
+      <section class="card pad">${cardHead('list', 'Urutan Kebutuhan Armada', 'Dari koridor yang paling membutuhkan', `<a class="btn-link" href="#/rekomendasi/riwayat">Riwayat 6 bulan ${ic('arrow-right', 16)}</a>`)}
         <div class="rank-list">${ev.ranked.map((r, i) => `
           <div class="rank-item ${i === 0 ? 'is-top' : ''}">
             <span class="rank-num ${r.units ? '' : 'light'}">${r.rank}</span>
@@ -713,7 +731,7 @@
               <div class="tags">${corridorTags(r.corridor).map(t => `<span class="tag grey">${t}</span>`).join('')}</div></div>
             <div class="need"><div class="between"><span>Tingkat kebutuhan</span><b>${r.score}</b></div>
               <div class="bar"><i style="width:${r.score}%;background:${catColor(r.category)}"></i></div>${catBadge(r.category)}${r.near ? ` <span title="Skor dekat batas kategori ${r.near}" class="c-amber">${ic('alert', 15, 'style="display:inline;vertical-align:-3px"')}</span>` : ''}</div>
-            <div class="units ${unitsLabel(r).none ? 'none' : ''}"><b>${unitsLabel(r).main}</b><span>${unitsLabel(r).sub}</span></div>
+            <div class="units ${unitsLabel(r).none ? 'none' : ''}"><b>${unitsLabel(r).main}</b><span>${unitsLabel(r).sub}</span>${trendLink(r, trend)}</div>
           </div>`).join('')}</div>
       </section>
       <section class="card pad">${cardHead('info', `Kenapa ${top.code} paling perlu?`, 'Dibandingkan rata-rata semua koridor')}
@@ -784,7 +802,8 @@
     const ev = calc(), u = state.ui, mode = u.tableMode, cats = S.CATEGORIES;
     const bounds = cats.map(k => k.min).filter(m => m > 0);
     const why = insight(ev);
-    const sens = S.sensitivity(state.corridors, state.weights, { maxExtraUnits: state.settings.maxExtraUnits });
+    const sens = S.sensitivity(periodCorridors(), state.weights, { maxExtraUnits: state.settings.maxExtraUnits });
+    const mc = S.monteCarlo(periodCorridors(), state.weights, { maxExtraUnits: state.settings.maxExtraUnits, runs: 1000, spread: 0.5, seed: 2026 });
     // Koridor yang dipantau di uji kestabilan: yang dekat batas, atau dua yang paling dekat.
     const dist = r => Math.min(...bounds.map(b => Math.abs(r.score - b)));
     let watch = ev.ranked.filter(r => r.near !== null);
@@ -805,9 +824,10 @@
     const subtitle = 'Langkah 1–2 · Diurutkan dari skor tertinggi';
     const n = ev.ranked.length;
     return `
-    ${pageHead('Detail Perhitungan', 'Cara skor tingkat kebutuhan dihitung dengan metode SAW, periode November 2026',
+    ${pageHead('Detail Perhitungan', `Cara skor tingkat kebutuhan dihitung dengan metode SAW, periode ${periodInfo().label}`,
       `<a class="btn" href="#/pengaturan">${ic('sliders', 16)} Atur Bobot</a><button class="btn btn-primary" data-action="export-calc">${ic('download', 16)} Ekspor Perhitungan</button>`,
       crumb('#/rekomendasi', 'Rekomendasi Armada', 'Detail Perhitungan'))}
+    ${periodBanner()}
     <div class="banner">${ic('info', 20)} Angka di sini sama dengan yang dipakai di Rekomendasi Armada dan Laporan.
       <span class="meta"><span>${ic('history', 15)} Bobot versi ${esc(state.weightsVersion.split(' · ')[0])}</span><span>${ic('refresh', 15)} Sinkron ${state.ui.lastSync} WIB</span></span></div>
     <div class="steps">${steps.map(([t, d], i) => `<div class="step"><i>${i + 1}</i><div><b>${t}</b><p>${d}</p></div></div>`).join('')}</div>
@@ -815,13 +835,13 @@
     <section class="card pad">${cardHead('hbars', 'Kontribusi Faktor ke Skor', 'Langkah 3–4 · Panjang tiap warna = nilai 0–1 × bobot faktor, dalam poin')}
       <div class="legend">${S.CRITERIA.map((k, j) => `<span><i class="sw" style="background:${RAMP[j]}"></i>${k.head === 'Tunggu' ? 'Waktu tunggu' : k.head} ${num(ev.weights[j] * 100)}%</span>`).join('')}<span><i class="dash"></i>Batas kategori</span></div>
       <div class="contrib">
-        ${ev.ranked.map((r, i) => `
-          <div class="lbl" style="grid-row:${i + 1};grid-column:1"><b>${r.code} ${r.corridor.name}</b><small>Peringkat ${r.rank} · ${r.units ? `+${r.units}` : '0'} unit</small></div>
-          <div class="trk" style="grid-row:${i + 1};grid-column:2"><div class="track" role="img" aria-label="${r.code}: ${S.CRITERIA.map((k, j) => `${k.head} ${num(r.pts[j], 1)}`).join(', ')}">
-            ${r.pts.map((p, j) => `<span style="width:${p}%;background:${RAMP[j]};color:${RAMP_INK[j]}">${p >= 6 ? num(p, 1) : ''}</span>`).join('')}</div></div>
-          <div class="res" style="grid-row:${i + 1};grid-column:3"><b>${r.score}</b>${catBadge(r.category)}${r.near ? `<span title="Dekat batas ${r.near}">${ic('alert', 16)}</span>` : ''}</div>`).join('')}
-        <div class="thresholds" style="grid-row:1 / span ${n}">${bounds.map(b => `<i style="left:${b}%"></i>`).join('')}</div>
-        <div class="axis" style="grid-row:${n + 1}">${[0, ...bounds.slice().reverse(), 100].map(t => `<span style="left:${t}%">${t}</span>`).join('')}</div>
+        ${ev.ranked.map(r => `<div class="contrib-row">
+          <div class="lbl"><b>${r.code} ${r.corridor.name}</b><small>Peringkat ${r.rank} · ${r.units ? `+${r.units}` : '0'} unit</small></div>
+          <div class="trk"><div class="track" role="img" aria-label="${r.code}: ${S.CRITERIA.map((k, j) => `${k.head} ${num(r.pts[j], 1)}`).join(', ')}">
+            ${r.pts.map((p, j) => `<span style="width:${p}%;background:${RAMP[j]};color:${RAMP_INK[j]}">${p >= 6 ? num(p, 1) : ''}</span>`).join('')}</div>
+            ${bounds.map(b => `<i class="thr" style="left:${b}%"></i>`).join('')}</div>
+          <div class="res"><b>${r.score}</b>${catBadge(r.category)}${r.near ? `<span title="Dekat batas ${r.near}">${ic('alert', 16)}</span>` : ''}</div></div>`).join('')}
+        <div class="contrib-row axis-row"><div class="lbl"></div><div class="axis">${[0, ...bounds.slice().reverse(), 100].map(t => `<span style="left:${t}%">${t}</span>`).join('')}</div><div class="res"></div></div>
       </div>
       <div class="callout">${ic('bulb', 18)}<div><b>${why.q}</b>${why.a}</div></div>
     </section>
@@ -834,7 +854,7 @@
         <div class="formula"><small class="c-amber">${ic('arrow-down', 14)} <span class="muted">Makin perlu jika nilai rendah (armada/km)</span></small><b>nilai terendah ÷ nilai</b></div>
         <div class="formula"><small>${ic('sigma', 14)} Skor tingkat kebutuhan</small><b>Σ (nilai 0–1 × bobot) × 100</b></div>
       </div>
-      <div class="tbl-wrap"><table class="tbl calc-tbl compact nowrap">
+      <div class="tbl-wrap"><table class="tbl calc-tbl sub-inline compact nowrap">
         <thead><tr><th>Koridor</th>${S.CRITERIA.map((k, j) => `<th class="num">${k.head}<span class="w"><i class="sw" style="background:${RAMP[j]}"></i>${num(ev.weights[j] * 100)}% ${ic(k.type === 'cost' ? 'arrow-down' : 'arrow-up', 11, `style="color:${k.type === 'cost' ? 'var(--amber)' : 'var(--blue)'}"`)}</span></th>`).join('')}<th class="num">Skor</th><th>Kategori</th></tr></thead>
         <tbody>${ev.ranked.map(r => `
           <tr class="click ${u.expanded === r.code ? 'is-sel' : ''}" data-action="expand-row" data-code="${r.code}" tabindex="0" aria-expanded="${u.expanded === r.code}">
@@ -871,13 +891,14 @@
         <div class="note-item">${ic('info', 16)}<div><b>Skor bersifat relatif</b><p>Nilai 0–1 dihitung terhadap koridor tertinggi bulan ini. Saat A6 ikut dihitung mulai Desember 2026, skor koridor lain bisa berubah walau datanya sama.</p></div></div>
         <div class="note-item">${ic('lock', 16)}<div><b>Dibekukan saat disahkan</b><p>Laporan yang sudah disahkan menyimpan perhitungan pada saat itu, bukan bobot terbaru.</p></div></div>
       </section>
-    </div>`;
+    </div>
+    ${monteCarloCard(mc, ev)}`;
   };
 
   /* ---------- Laporan ---------- */
   function reportEval() {
     const snap = state.snapshot;
-    return snap ? S.evaluate(state.corridors, snap.weights, { maxExtraUnits: snap.maxExtraUnits }) : calc();
+    return snap ? S.evaluate(state.corridors, snap.weights, { maxExtraUnits: snap.maxExtraUnits }) : calcNow();
   }
 
   function docPages(ev) {
@@ -1006,6 +1027,142 @@
     </section>`;
   };
 
+
+
+  /* ---------- Tren skor singkat per koridor (tautan ke Riwayat) ---------- */
+  // Skor tiap koridor pada bulan pertama riwayat, untuk dibandingkan dengan periode yang sedang dilihat.
+  function firstMonthScores() {
+    const idx = S.MONTHS.findIndex(m => m.key === state.period);
+    if (idx <= 0) return null;
+    const first = S.history(state.weights, { maxExtraUnits: state.settings.maxExtraUnits })[0];
+    return { month: first, score: Object.fromEntries(first.result.rows.map(r => [r.code, r.score])) };
+  }
+  function trendLink(r, trend) {
+    if (!trend || trend.score[r.code] === undefined) return '';
+    const d = r.score - trend.score[r.code], m = trend.month.short;
+    const dir = Math.abs(d) <= 1 ? 0 : Math.sign(d); // selisih 1 poin dianggap stabil (pembulatan)
+    const txt = dir > 0 ? `▲ ${d} poin sejak ${m}` : dir < 0 ? `▼ ${-d} poin sejak ${m}` : `Stabil sejak ${m}`;
+    const say = dir > 0 ? `naik ${d} poin` : dir < 0 ? `turun ${-d} poin` : 'stabil';
+    return `<a class="trend ${dir > 0 ? 'up' : dir < 0 ? 'down' : ''}" href="#/rekomendasi/riwayat" aria-label="Lihat riwayat ${r.code}: skor ${say} sejak ${trend.month.label}">${txt}</a>`;
+  }
+
+  /* ---------- Status periode, sinkronisasi, dan pemuatan ---------- */
+  function periodBanner() {
+    if (isCurrent()) return '';
+    return `<div class="banner">${ic('history', 20)} Menampilkan data periode ${periodInfo().label}. Rekomendasi aktif adalah November 2026.
+      <span class="meta"><button class="btn-link" data-action="set-period" data-key="${CURRENT}">Kembali ke November 2026</button></span></div>`;
+  }
+  function todayNote() {
+    if (isCurrent()) return '';
+    return `<div class="banner">${ic('info', 20)} Halaman ini selalu menampilkan kondisi hari ini, 20 November 2026. Periode ${periodInfo().label} berlaku untuk Data Koridor, Rekomendasi, dan Riwayat.</div>`;
+  }
+  function syncBanner() {
+    if (!state.ui.offline && !state.ui.syncError) return '';
+    const msg = state.ui.offline
+      ? 'Koneksi terputus. Data tidak diperbarui sampai koneksi kembali.'
+      : `Sinkronisasi gagal pukul ${state.ui.syncError}. Server GPS dan tiket elektronik tidak merespons.`;
+    return `<div class="banner error" role="alert">${ic(state.ui.offline ? 'wifi' : 'alert', 20)} ${msg} Yang tampil adalah data terakhir pukul 06:15 WIB.
+      <span class="meta"><button class="btn btn-sm" data-action="sync" ${state.ui.syncing ? 'disabled' : ''}>${ic('refresh', 15)} ${state.ui.syncing ? 'Mencoba…' : 'Coba lagi'}</button></span></div>`;
+  }
+  function skeletonPage() {
+    const line = (w, h = 14, mt = 0) => `<span class="sk" style="width:${w};height:${h}px;margin-top:${mt}px"></span>`;
+    const card = n => `<section class="card pad">${line('40%', 18)}${line('60%', 12, 8)}${Array.from({ length: n }, () => `<div class="sk-row">${line('36px', 36)}<div style="flex:1">${line('55%', 14)}${line('35%', 11, 8)}</div>${line('70px', 22)}</div>`).join('')}</section>`;
+    return `<div class="page-head" aria-hidden="true"><div>${line('280px', 32)}${line('420px', 14, 10)}</div></div>
+      <p class="sr" role="status">Memuat data periode ${periodInfo().label}…</p>
+      <div class="sk" style="height:150px;border-radius:20px"></div>
+      <div class="grid g-side">${card(5)}${card(3)}</div>`;
+  }
+
+  /* ---------- Riwayat Kebutuhan (6 bulan) ---------- */
+  const LINE = { A4: '#0F2D4E', A1: '#2F64A0', A3: '#C47A0E', A2: '#6E98CF', A5: '#287A4E' };
+  function historyChart(hist, order) {
+    const W = 900, Hh = 300, L = 44, R = 96, T = 14, B = 34, lo = 40, hi = 100;
+    const x = i => L + (i * (W - L - R)) / (hist.length - 1);
+    const y = v => T + ((hi - v) / (hi - lo)) * (Hh - T - B);
+    const bands = [[80, 100, '#FCECEE', 'Sangat perlu'], [72, 80, '#FDF5E6', 'Perlu'], [55, 72, '#EEF4FB', 'Pantau'], [lo, 55, '#EDF7F1', 'Belum perlu']];
+    const bandSvg = bands.map(([a, b, c]) => `<rect x="${L}" y="${y(b)}" width="${W - L - R}" height="${y(a) - y(b)}" fill="${c}"/>`).join('');
+    const grid = [40, 55, 72, 80, 100].map(v => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="#D6DEE8" stroke-dasharray="3 3"/><text x="${L - 8}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="#5F7288">${v}</text>`).join('');
+    const lines = order.map(code => {
+      const pts = hist.map((m, i) => [x(i), y(m.result.rows.find(r => r.code === code).score)]);
+      const last = hist[hist.length - 1].result.rows.find(r => r.code === code);
+      return `<g><path d="${pts.map((p, i) => `${i ? 'L' : 'M'}${p[0]} ${p[1]}`).join(' ')}" fill="none" stroke="${LINE[code]}" stroke-width="2.5" stroke-linejoin="round"/>
+        ${pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="3.5" fill="#fff" stroke="${LINE[code]}" stroke-width="2"/>`).join('')}
+        <text x="${W - R + 10}" y="${pts[pts.length - 1][1] + 4}" font-size="12" font-weight="600" fill="${LINE[code]}">${code} · ${last.score}</text></g>`;
+    }).join('');
+    const xl = hist.map((m, i) => `<text x="${x(i)}" y="${Hh - 10}" text-anchor="middle" font-size="12" fill="${i === hist.length - 1 ? '#0F2D4E' : '#606D7D'}" font-weight="${i === hist.length - 1 ? 600 : 400}">${m.short}</text>`).join('');
+    const legend = `<div class="band-legend" aria-hidden="true">${bands.map(([a, b, c, n]) => `<span><i style="background:${c}"></i>${n} <small>${a === lo ? `&lt; ${b}` : b === hi ? `≥ ${a}` : `${a}–${b - 1}`}</small></span>`).join('')}</div>`;
+    return `${legend}<svg class="chart" viewBox="0 0 ${W} ${Hh}" role="img" aria-label="Skor tingkat kebutuhan tiap koridor dari ${hist[0].label} sampai ${hist[hist.length - 1].label}">${bandSvg}${grid}${lines}${xl}</svg>`;
+  }
+
+  function historyInsights(hist) {
+    const out = [], codes = hist[0].result.rows.map(r => r.code);
+    const nm = c => `${c} ${state.corridors.find(x => x.code === c).name}`;
+    codes.forEach(code => {
+      for (let i = 1; i < hist.length; i++) {
+        const a = hist[i - 1].result.rows.find(r => r.code === code), b = hist[i].result.rows.find(r => r.code === code);
+        if (a.category !== b.category) {
+          const up = S.CATEGORIES.indexOf(b.category) < S.CATEGORIES.indexOf(a.category);
+          const passed = hist[i].result.rows.filter(r => r.code !== code && hist[i - 1].result.rows.find(x => x.code === r.code).rank < a.rank && r.rank > b.rank).map(r => r.code);
+          out.push(`${nm(code)} ${up ? 'naik' : 'turun'} dari ${a.category.label} ke ${b.category.label} pada ${hist[i].label} (skor ${a.score} → ${b.score})${passed.length ? ` dan menyalip ${listID(passed)}` : ''}.`);
+        }
+      }
+    });
+    const steady = S.CATEGORIES.map(c => ({ c, codes: codes.filter(code => hist.every(m => m.result.rows.find(r => r.code === code).category === c)) })).filter(g => g.codes.length);
+    steady.forEach(g => out.push(`${listID(g.codes)} berada di kategori ${g.c.label} selama ${hist.length} bulan.`));
+    const units = hist.map(m => m.result.totalUnits);
+    const segs = [];
+    units.forEach((u, i) => { if (!segs.length || segs[segs.length - 1].u !== u) segs.push({ u, from: i, to: i }); else segs[segs.length - 1].to = i; });
+    if (segs.length > 1) out.push(`Usulan tambahan armada ${segs.map(g => `+${g.u} unit (${hist[g.from].short}${g.to > g.from ? `–${hist[g.to].short}` : ''})`).join(' lalu ')}.`);
+    return out;
+  }
+
+  PAGES.riwayat = () => {
+    const hist = S.history(state.weights, { maxExtraUnits: state.settings.maxExtraUnits });
+    const last = hist[hist.length - 1].result, order = last.ranked.map(r => r.code);
+    const insights = historyInsights(hist);
+    const maxU = Math.max(...hist.map(m => m.result.totalUnits), 1);
+    return `
+    ${pageHead('Riwayat Kebutuhan Armada', `Skor tingkat kebutuhan tiap koridor, ${hist[0].label} – ${hist[hist.length - 1].label}`,
+      `<a class="btn" href="#/rekomendasi/detail">${ic('table', 16)} Detail Perhitungan</a>`, crumb('#/rekomendasi', 'Rekomendasi Armada', 'Riwayat Kebutuhan'))}
+    <section class="card pad">${cardHead('trend', 'Perkembangan Skor', 'Dihitung ulang dengan bobot aktif untuk setiap bulan · latar menunjukkan kategori')}
+      ${historyChart(hist, order)}</section>
+    <div class="grid g-side">
+      <section class="card">
+        <div class="pad-x">${cardHead('table', 'Skor dan Kategori per Bulan', 'Klik bulan untuk membuka rekomendasi periode itu')}</div>
+        <div class="tbl-wrap"><table class="tbl compact nowrap hist-tbl">
+          <thead><tr><th>Koridor</th>${hist.map(m => `<th class="center"><button class="btn-link" data-action="set-period" data-key="${m.key}" data-go="rekomendasi">${m.short}</button></th>`).join('')}</tr></thead>
+          <tbody>${order.map(code => `<tr><td class="name"><b>${code} ${state.corridors.find(c => c.code === code).name}</b></td>${hist.map((m, i) => {
+            const r = m.result.rows.find(x => x.code === code), p = i ? hist[i - 1].result.rows.find(x => x.code === code) : null;
+            const mark = p && p.category !== r.category ? (S.CATEGORIES.indexOf(r.category) < S.CATEGORIES.indexOf(p.category) ? ' ▲' : ' ▼') : '';
+            return `<td class="center"><span class="hcell t-${r.category.tone}" title="${r.category.label}, peringkat ${r.rank}">${r.score}${mark}</span></td>`; }).join('')}</tr>`).join('')}
+          <tr class="units-row"><td class="name"><b>Usulan tambahan</b></td>${hist.map(m => `<td class="center"><div class="ubar"><i style="height:${(m.result.totalUnits / maxU) * 100}%"></i></div><b>+${m.result.totalUnits}</b></td>`).join('')}</tr></tbody>
+        </table></div>
+        <p class="small muted" style="padding:12px 24px 16px">▲ naik kategori · ▼ turun kategori. Warna sel mengikuti kategori tingkat kebutuhan.</p>
+      </section>
+      <section class="card pad">${cardHead('bulb', 'Yang Berubah', 'Dibaca otomatis dari tabel')}
+        <ul class="insights">${insights.map(t => `<li>${t}</li>`).join('')}</ul>
+        <div class="note mt-16">${ic('info', 18)}<span>Skor dihitung relatif terhadap koridor tertinggi di bulan yang sama, jadi perbandingan antarbulan menunjukkan posisi relatif, bukan nilai absolut.</span></div>
+      </section>
+    </div>`;
+  };
+
+  /* ---------- Simulasi acak bobot ---------- */
+  function monteCarloCard(mc, ev) {
+    const pct = x => `${num((x / mc.runs) * 100, 1)}%`;
+    const bar = (x, tone) => `<div class="bar mc-bar"><i style="width:${(x / mc.runs) * 100}%;background:${tone}"></i></div>`;
+    return `<section class="card">
+      <div class="pad-x">${cardHead('shuffle', 'Simulasi Acak Bobot', `${num(mc.runs)} kombinasi bobot acak: setiap bobot dikali faktor antara ${num(1 - mc.spread, 1)} dan ${num(1 + mc.spread, 1)}, lalu dinormalkan`)}
+        <div class="chip-row"><span class="badge ${mc.sameOrder === mc.runs ? 't-green' : 't-amber'}">Urutan sama di ${pct(mc.sameOrder)} simulasi</span>
+          <span class="badge plain t-grey">Seed 2026 · hasil sama dengan analysis/saw.py</span></div></div>
+      <div class="tbl-wrap"><table class="tbl sub-inline compact nowrap"><thead><tr><th>Koridor</th><th>Peringkat sama</th><th>Kategori sama</th><th class="num">Rentang skor</th></tr></thead>
+        <tbody>${ev.ranked.map(r => { const st = mc.stats[r.code]; return `<tr><td class="name"><b>${r.code} ${r.corridor.name}</b><small>Peringkat ${r.rank} · ${r.category.label}</small></td>
+          <td><div class="row">${bar(st.sameRank, 'var(--blue)')}<b>${pct(st.sameRank)}</b></div></td>
+          <td><div class="row">${bar(st.sameCategory, st.sameCategory === mc.runs ? 'var(--green)' : 'var(--amber-bar)')}<b>${pct(st.sameCategory)}</b></div></td>
+          <td class="num">${st.min}–${st.max}</td></tr>`; }).join('')}</tbody></table></div>
+      <p class="small muted" style="padding:12px 24px 18px">Koridor dengan kategori sama di bawah 100% perlu pertimbangan pimpinan, karena variasi bobot yang wajar bisa memindahkannya ke kategori lain.</p>
+    </section>`;
+  }
+
   /* ================================================================ 6. Pengaturan (pratinjau langsung) */
   const makeDraft = () => ({ weights: state.weights.slice(), settings: { ...state.settings } });
   const SETTING_KEYS = ['waitMax', 'onTimeMin', 'loadCritical', 'maxExtraUnits', 'recalc'];
@@ -1018,7 +1175,7 @@
     return w.map((x, j) => `<span style="width:${(x / Math.max(t, 100)) * 100}%;background:${RAMP[j]};color:${RAMP_INK[j]}" title="${S.CRITERIA[j].name} ${x}%">${x >= 6 ? `${x}%` : ''}</span>`).join('');
   }
   function previewHTML() {
-    const d = state.draft, ev = S.evaluate(state.corridors, d.weights, { maxExtraUnits: d.settings.maxExtraUnits }), act = calc();
+    const d = state.draft, ev = S.evaluate(state.corridors, d.weights, { maxExtraUnits: d.settings.maxExtraUnits }), act = calcNow();
     const same = ev.ranked.map(r => r.code).join() === act.ranked.map(r => r.code).join();
     const prio = ev.ranked.filter(r => r.units > 0);
     const moved = ev.ranked.filter(r => act.ranked.find(x => x.code === r.code).rank !== r.rank).map(r => `${r.code} ke peringkat ${r.rank}`);
@@ -1098,7 +1255,7 @@
         <div class="stack mt-20" style="gap:10px">${src.map(([i, t, s, l]) => `<div class="src-item"><span class="fi">${ic(i, 18)}</span><div><b>${t}</b><small>${s}</small></div><span class="small muted">${l}</span><span class="badge t-green">Terhubung</span></div>`).join('')}
           <div class="src-item"><span class="fi">${ic('route', 18)}</span><div><b>Data trayek &amp; halte</b><small>Rute, halte &amp; transit · diubah 1 Nov 2026</small></div><a class="btn-link" href="#/koridor">Kelola di Data Koridor ${ic('arrow-right', 14)}</a><span class="badge t-grey">Manual</span></div></div>
         <div class="divider"></div>
-        <div class="between"><div><b>Hitung ulang rekomendasi</b><p class="small muted">Skor dan usulan armada diperbarui otomatis</p></div>
+        <div class="between wrap-sm"><div><b>Hitung ulang rekomendasi</b><p class="small muted">Skor dan usulan armada diperbarui otomatis</p></div>
           <select class="select" data-change="spm-select" name="recalc" aria-label="Jadwal hitung ulang">${[['daily', 'Setiap hari · 06:15 WIB'], ['weekly', 'Setiap Senin · 06:15 WIB'], ['manual', 'Manual saja']].map(([v, l]) => `<option value="${v}" ${ds.recalc === v ? 'selected' : ''}>${l}</option>`).join('')}</select></div>
       </section>
       <section class="card pad">${cardHead('bell', 'Notifikasi', 'Peringatan yang dikirim ke Anda')}
@@ -1125,7 +1282,7 @@
       <div class="drawer-body">
         <div class="chips">${chip('all', 'Semua')}${chip('kritis', 'Kritis', 'red')}${chip('waspada', 'Waspada', 'amber')}${chip('normal', 'Normal', 'green')}</div>
         <div class="sum-strip mt-16"><div><b>${num(sum(cs.map(c => c.km)), 1)} km</b><span>Panjang rute</span></div><div><b>${sum(cs.map(c => c.stops))}</b><span>Halte</span></div><div><b>${sum(cs.map(c => c.units))}</b><span>Unit armada</span></div><div><b>${num(sum(cs.map(c => c.passengers)))}</b><span>Penumpang/hari</span></div></div>
-        <div class="between mt-20"><b style="color:var(--navy)">Nilai 6 faktor penilaian tiap koridor</b><span class="small muted">Diurutkan berdasarkan kode</span></div>
+        <div class="between wrap-sm mt-20"><b style="color:var(--navy)">Nilai 6 faktor penilaian tiap koridor</b><span class="small muted">Diurutkan berdasarkan kode</span></div>
         ${shown.map(c => { const s = statusOf(c); return `<div class="corr-row"><span class="code-tile">${c.code}</span><div>
           <div class="between"><b style="font-size:15px">${c.name}</b>${statusBadge(s)}</div>
           <p class="small muted">${c.group} · ${num(c.km, 1)} km · ${c.stops} halte · ${c.units} unit</p>
@@ -1140,7 +1297,7 @@
   };
 
   OVERLAYS.drawerRekomendasi = () => {
-    const ev = calc(), top = ev.ranked[0], prio = ev.ranked.filter(r => r.units > 0), imp = impactSummary(ev);
+    const ev = calcNow(), top = ev.ranked[0], prio = ev.ranked.filter(r => r.units > 0), imp = impactSummary(ev);
     const fleet = sum(state.corridors.map(c => c.units));
     const loads = prio.slice(0, 2).map(r => ({ r, im: S.impact(r.corridor, r.units) }));
     return `<div class="scrim" data-action="close-overlay"></div>
@@ -1151,11 +1308,11 @@
         <section class="hero compact"><div><span class="over">REKOMENDASI BULAN INI</span><h2>${ev.totalUnits ? `Tambah ${ev.totalUnits} unit armada` : 'Belum perlu tambahan armada'}</h2>
           <p style="font-size:13px">${ev.totalUnits ? `Untuk ${prio.length} koridor, dimulai dari ${top.code} ${top.corridor.name} (+${top.units} unit).` : 'Semua koridor masih dalam batas layanan.'}</p></div>
           <div class="hero-stats"><div><b>${fleet} → ${fleet + ev.totalUnits}</b><span>total armada</span></div><div><b>${imp.delta < 0 ? '−' : ''}${num(Math.abs(imp.delta), 1)} mnt</b><span>rata-rata waktu tunggu</span></div><div><b>${prio.length}</b><span>koridor prioritas</span></div></div></section>
-        <div class="between mt-20"><b style="color:var(--navy)">Urutan kebutuhan armada</b><span class="small muted">Skor 0–100 dari 6 faktor</span></div>
-        <div class="mt-8">${ev.ranked.map((r, i) => `<div class="rank-item ${i === 0 ? 'is-top' : ''}" style="grid-template-columns:40px minmax(0,1fr) 40px 110px 80px;padding:12px">
-          <span class="rank-num ${r.units ? '' : 'light'}" style="width:30px;height:30px;font-size:13px">${r.rank}</span>
-          <div><b style="font-size:14px">${r.code} ${r.corridor.name}</b><div class="bar mt-8" style="height:6px"><i style="width:${r.score}%;background:${catColor(r.category)}"></i></div></div>
-          <b style="font-size:16px;color:var(--navy)">${r.score}</b>${catBadge(r.category)}<span class="units ${unitsLabel(r).none ? 'none' : ''}"><b style="font-size:15px">${unitsLabel(r).main}</b></span></div>`).join('')}</div>
+        <div class="between wrap-sm mt-20"><b style="color:var(--navy)">Urutan kebutuhan armada</b><span class="small muted">Skor 0–100 dari 6 faktor</span></div>
+        <div class="mt-8">${ev.ranked.map((r, i) => `<div class="rank-item dr-rank ${i === 0 ? 'is-top' : ''}">
+          <span class="rank-num ${r.units ? '' : 'light'}">${r.rank}</span>
+          <div class="dr-name"><b>${r.code} ${r.corridor.name}</b><div class="bar"><i style="width:${r.score}%;background:${catColor(r.category)}"></i></div></div>
+          <b class="dr-score">${r.score}</b>${catBadge(r.category)}<span class="units dr-units ${unitsLabel(r).none ? 'none' : ''}"><b>${unitsLabel(r).main}</b></span></div>`).join('')}</div>
         ${prio.length ? `<div class="card pad mt-16" style="box-shadow:none;background:#F7FAFE;padding:16px 18px"><b style="color:var(--navy)">Perkiraan dampak jika usulan dijalankan</b>
           <div class="grid g-3 mt-8" style="gap:12px">
             <div><b style="font-size:16px"><span class="muted">${num(imp.before, 1)} →</span> <span class="c-green">${num(imp.after, 1)} mnt</span></b><p class="small muted">Waktu tunggu rata-rata</p></div>
@@ -1166,6 +1323,25 @@
     </aside>`;
   };
 
+
+  OVERLAYS.confirmApprove = () => {
+    const ev = calcNow(), prio = ev.ranked.filter(r => r.units > 0), near = ev.ranked.filter(r => r.near);
+    const fleet = sum(state.corridors.map(c => c.units));
+    return `<div class="scrim" data-action="close-overlay"></div>
+    <div class="modal sm" role="alertdialog" aria-modal="true" aria-labelledby="cf-title" aria-describedby="cf-desc" tabindex="-1">
+      <div class="modal-head"><span class="card-icon">${ic('check-circle', 24)}</span><div><h2 id="cf-title">Setujui rekomendasi November 2026?</h2>
+        <p class="muted" id="cf-desc" style="margin-top:2px">Laporan akan dibuat dan dikirim untuk disahkan Kepala Dinas.</p></div>
+        <button class="close-btn" data-action="close-overlay" aria-label="Tutup">${ic('x', 18)}</button></div>
+      <div class="modal-body">
+        <div class="confirm-sum"><div><span>Tambahan armada</span><b>+${ev.totalUnits} unit</b></div><div><span>Total armada</span><b>${fleet} → ${fleet + ev.totalUnits}</b></div><div><span>Koridor prioritas</span><b>${prio.length}</b></div></div>
+        <ul class="confirm-list">${prio.map(r => `<li><span>${r.code} ${r.corridor.name}</span>${catBadge(r.category)}<b>+${r.units} unit</b></li>`).join('')}</ul>
+        ${near.length ? `<div class="banner warn">${ic('alert', 20)}<span>${listID(near.map(r => r.code))} dekat batas kategori. Periksa <a class="btn-link" href="#/rekomendasi/detail">Detail Perhitungan</a> bila ragu.</span></div>` : ''}
+        <p class="small muted">${ic('lock', 14, 'style="display:inline;vertical-align:-2px"')} Perhitungan dan bobot saat ini akan dibekukan di laporan.</p>
+      </div>
+      <div class="modal-foot"><span style="margin-left:auto"></span><button class="btn btn-ghost" data-action="close-overlay">Batal</button>
+        <button class="btn btn-primary" data-action="approve-confirm">${ic('check-circle', 18)} Ya, buat laporan</button></div>
+    </div>`;
+  };
   const nextCode = () => `A${state.corridors.length + state.newCorridors.length + 1}`;
   const blankForm = () => ({ code: nextCode(), group: 'Koridor Timur – Pusat', from: '', to: '', km: '', stops: '', units: '', depot: 'Depo Kenjeran', start: '2026-12-01', hours: '05.30 – 21.00', transit: [], file: null });
   const exampleForm = () => ({ code: nextCode(), group: 'Koridor Timur – Pusat', from: 'Halte Keputih', to: 'Stasiun Gubeng', km: '14,6', stops: '19', units: '6',
@@ -1241,15 +1417,35 @@
   /* ================================================================ 8. Aksi & event */
   const ACTIONS = {
     toast: el => toast(el.dataset.msg),
+    'set-period': el => {
+      closeMenus();
+      const key = el.dataset.key, go = el.dataset.go;
+      if (go) location.hash = `#/${go}`;
+      if (state.period === key) return;
+      state.period = key;
+      state.ui.loading = true;
+      render();
+      setTimeout(() => { state.ui.loading = false; render(); }, 450);
+      toast(`Periode diganti ke ${periodInfo().label}.`);
+    },
+    'nav-toggle': () => {
+      const open = !document.body.classList.contains('nav-open');
+      document.body.classList.toggle('nav-open', open);
+      $('.nav-btn')?.setAttribute('aria-expanded', open);
+    },
+    skip: () => { const v = $('#view'); if (v) { v.focus(); window.scrollTo(0, 0); } },
     period: () => toast('Prototype ini hanya berisi data November 2026.'),
     menu(el) {
       const m = document.getElementById(`menu-${el.dataset.menu}`);
       const open = m.hidden;
       closeMenus();
       if (!open) return;
-      m.innerHTML = el.dataset.menu === 'notif'
+      m.innerHTML = el.dataset.menu === 'period'
+        ? `<h3>Periode data</h3>${S.MONTHS.slice().reverse().map(mo => `<button class="menu-item" data-action="set-period" data-key="${mo.key}">${mo.key === state.period ? ic('check', 18) : '<span style="width:18px"></span>'}<span><b>${mo.label}</b><small>${mo.key === CURRENT ? 'Periode berjalan' : 'Rekomendasi sudah disahkan'}</small></span></button>`).join('')}
+           <a class="menu-item" href="#/rekomendasi/riwayat">${ic('trend', 18)}<span><b>Lihat riwayat 6 bulan</b><small>Perkembangan skor tiap koridor</small></span></a>`
+        : el.dataset.menu === 'notif'
         ? `<h3>Notifikasi</h3>${ALERTS.slice(0, 3).map(a => `<a class="menu-item" href="#/dashboard"><i class="dot" style="background:${HEX[a.tone]};margin-top:5px"></i><span><b>${a.title}</b><small>${a.time} · ${a.text}</small></span></a>`).join('')}
-           <a class="menu-item" href="#/rekomendasi"><i class="dot" style="background:var(--blue);margin-top:5px"></i><span><b>Rekomendasi November tersedia</b><small>06:15 · Tambah ${calc().totalUnits} unit untuk koridor prioritas</small></span></a>`
+           <a class="menu-item" href="#/rekomendasi"><i class="dot" style="background:var(--blue);margin-top:5px"></i><span><b>Rekomendasi November tersedia</b><small>06:15 · Tambah ${calcNow().totalUnits} unit untuk koridor prioritas</small></span></a>`
         : `<div class="menu-item" style="cursor:default"><span class="avatar">BI</span><span><b>Bambang Irawan, S.T.</b><small>Transport Planner · Dishub</small></span></div>
            <a class="menu-item" href="#/pengaturan">${ic('settings', 18)}<span>Pengaturan</span></a>
            <button class="menu-item" data-action="logout">${ic('logout', 18)}<span>Keluar</span></button>`;
@@ -1278,8 +1474,9 @@
       $('#cf-transit-score').innerHTML = `Nilai transit <b style="color:var(--navy)">${f.transit.length}/5</b>`;
       if (f.transit.length && state.ui.formErrors.transit) { delete state.ui.formErrors.transit; $('#cf-err-transit')?.remove(); }
     },
-    approve: () => {
-      const ev = calc();
+    approve: () => { location.hash = '#/rekomendasi/setuju'; },
+    'approve-confirm': () => {
+      const ev = calcNow();
       state.snapshot = { weights: state.weights.slice(), maxExtraUnits: state.settings.maxExtraUnits, version: state.weightsVersion, time: nowHM() };
       const doc = state.reports.find(d => d.id === 'p-2026-11');
       if (doc) doc.status = 'Menunggu';
@@ -1328,6 +1525,7 @@
     },
     'save-settings': () => {
       if (!isDirty()) { toast('Belum ada perubahan untuk disimpan.'); return; }
+      const calc = calcNow;
       const d = state.draft, ds = d.settings, errs = [];
       if (sum(d.weights) !== 100) errs.push('total bobot harus 100%');
       if (!(ds.waitMax >= 1 && ds.waitMax <= 60)) errs.push('target waktu tunggu 1–60 menit');
@@ -1351,9 +1549,16 @@
       render();
       setTimeout(() => {
         state.ui.syncing = false;
+        if (!navigator.onLine) {
+          state.ui.syncError = nowHM();
+          render();
+          toast('Sinkronisasi gagal. Periksa koneksi lalu coba lagi.');
+          return;
+        }
+        state.ui.syncError = null;
         state.ui.lastSync = nowHM();
         state.history.unshift({ time: `Hari ini · ${state.ui.lastSync}`, text: 'Sinkronisasi manual GPS & tiket elektronik', color: '#2F64A0' });
-        if (current.page === 'pengaturan') render();
+        render();
         toast('Data tersinkron. Skor tidak berubah karena rata-rata November sama.', true);
       }, 900);
     },
@@ -1467,11 +1672,12 @@
     login: { page: 'login' },
     dashboard: { page: 'dashboard' }, 'dashboard/koridor': { page: 'dashboard', overlay: 'drawerKoridor' }, 'dashboard/rekomendasi': { page: 'dashboard', overlay: 'drawerRekomendasi' },
     peta: { page: 'peta' }, koridor: { page: 'koridor' }, 'koridor/tambah': { page: 'koridor', overlay: 'modalTambah' },
-    rekomendasi: { page: 'rekomendasi' }, 'rekomendasi/detail': { page: 'detail' },
+    rekomendasi: { page: 'rekomendasi' }, 'rekomendasi/detail': { page: 'detail' }, 'rekomendasi/riwayat': { page: 'riwayat' },
+    'rekomendasi/setuju': { page: 'rekomendasi', overlay: 'confirmApprove' },
     laporan: { page: 'laporan' }, 'laporan/arsip': { page: 'arsip' }, pengaturan: { page: 'pengaturan' },
   };
-  const NAV_OF = { dashboard: 'dashboard', peta: 'peta', koridor: 'koridor', rekomendasi: 'rekomendasi', detail: 'rekomendasi', laporan: 'laporan', arsip: 'laporan', pengaturan: 'pengaturan' };
-  const TITLES = { login: 'Masuk', dashboard: 'Dashboard', peta: 'Peta Rute', koridor: 'Data Koridor', rekomendasi: 'Rekomendasi Armada', detail: 'Detail Perhitungan', laporan: 'Laporan', arsip: 'Semua Arsip', pengaturan: 'Pengaturan' };
+  const NAV_OF = { dashboard: 'dashboard', peta: 'peta', koridor: 'koridor', rekomendasi: 'rekomendasi', detail: 'rekomendasi', riwayat: 'rekomendasi', laporan: 'laporan', arsip: 'laporan', pengaturan: 'pengaturan' };
+  const TITLES = { login: 'Masuk', dashboard: 'Dashboard', peta: 'Peta Rute', koridor: 'Data Koridor', rekomendasi: 'Rekomendasi Armada', detail: 'Detail Perhitungan', riwayat: 'Riwayat Kebutuhan', laporan: 'Laporan', arsip: 'Semua Arsip', pengaturan: 'Pengaturan' };
   let current = {};
 
   function route() {
@@ -1487,6 +1693,7 @@
   function render(opts = {}) {
     const isLogin = current.page === 'login';
     $('#login-root').hidden = !isLogin;
+    $('.skip').hidden = isLogin;
     $('#shell').hidden = isLogin;
     document.title = `${TITLES[current.page]} · WiraWiri`;
     closeMenus();
@@ -1503,7 +1710,12 @@
       document.body.classList.remove('has-overlay');
       return;
     }
-    $('#view').innerHTML = PAGES[current.page]();
+    const loading = state.ui.loading && ['koridor', 'rekomendasi', 'detail', 'riwayat'].includes(current.page);
+    $('#view').innerHTML = loading ? skeletonPage() : PAGES[current.page]();
+    $('#view').setAttribute('aria-busy', loading);
+    const pl = $('#period-label');
+    if (pl) pl.textContent = periodInfo().label;
+    document.body.classList.remove('nav-open');
     document.querySelectorAll('.nav a').forEach(n => {
       const on = n.dataset.nav === NAV_OF[current.page];
       n.classList.toggle('is-active', on);
@@ -1527,7 +1739,44 @@
 
   hydrateIcons();
   document.querySelectorAll('img[data-logo]').forEach(img => { img.src = img.dataset.logo === 'dark' ? LOGO_DARK : LOGO_LIGHT; });
+  /* ---------- Label sel tabel ----------
+     Setiap sel diberi data-label dari kepala kolomnya, dan sel pada kolom judul (kode, koridor,
+     dokumen, skenario) ditandai .cell-title. Satu markup tabel dipakai di semua lebar layar;
+     CSS yang menentukan tampilannya (baris tabel di layar lebar, kartu berlabel di layar sempit). */
+  const TITLE_COLS = new Set(['kode', 'kode unit', 'koridor', 'nama rute & koridor', 'dokumen', 'skenario bobot', 'urutan koridor', '#']);
+  function headText(th) {
+    if (th.dataset.label) return th.dataset.label;
+    const c = th.cloneNode(true);
+    c.querySelectorAll('.w, .ic').forEach(x => x.remove());
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
+  function labelTables(root = document) {
+    root.querySelectorAll('table.tbl, table.doc-table').forEach(t => {
+      const heads = [];
+      t.querySelectorAll('thead th').forEach(th => { for (let i = 0; i < (th.colSpan || 1); i++) heads.push(headText(th)); });
+      if (!heads.length) return;
+      t.querySelectorAll('tbody tr, tfoot tr').forEach(tr => {
+        let col = 0;
+        [...tr.cells].forEach(td => {
+          const span = td.colSpan || 1, label = heads[col] || '';
+          const title = span >= heads.length || TITLE_COLS.has(label.toLowerCase()) || (col === 0 && span > 1);
+          td.classList.toggle('cell-title', title);
+          if (title || !label) td.removeAttribute('data-label'); else td.dataset.label = label;
+          col += span;
+        });
+      });
+    });
+  }
+  let labelQueued = false;
+  new MutationObserver(() => {
+    if (labelQueued) return;
+    labelQueued = true;
+    queueMicrotask(() => { labelQueued = false; labelTables(); });
+  }).observe(document.body, { childList: true, subtree: true });
+
   window.addEventListener('hashchange', route);
+  window.addEventListener('offline', () => { state.ui.offline = true; render(); toast('Koneksi terputus. Data tidak diperbarui.'); });
+  window.addEventListener('online', () => { state.ui.offline = false; render(); toast('Koneksi kembali.', true); });
   if (!location.hash) location.replace('#/login');
   route();
 })();

@@ -161,8 +161,76 @@
     });
   }
 
-  const api = { CRITERIA, CATEGORIES, SETTINGS, CORRIDORS, SCENARIOS, round, defaultWeights, fleetPerKm, value,
-    category, nearBoundary, evaluate, allocate, impact, status, rescale, sensitivity };
+  // Riwayat rata-rata bulanan Juni-November 2026 (data simulasi, sama dengan sheet History di workbook).
+  // Urutan nilai: penumpang/hari, kepadatan %, waktu tunggu menit, keluhan/bulan. Unit armada dan
+  // keterhubungan transit tetap, jadi armada/km dan C6 sama setiap bulan.
+  const MONTHS = [
+    { key: '2026-06', label: 'Juni 2026', short: 'Jun' },
+    { key: '2026-07', label: 'Juli 2026', short: 'Jul' },
+    { key: '2026-08', label: 'Agustus 2026', short: 'Agu' },
+    { key: '2026-09', label: 'September 2026', short: 'Sep' },
+    { key: '2026-10', label: 'Oktober 2026', short: 'Okt' },
+    { key: '2026-11', label: 'November 2026', short: 'Nov' },
+  ];
+  const HISTORY = {
+    A1: [[415, 84, 21, 12], [425, 85, 22, 12], [440, 87, 22, 13], [450, 88, 23, 14], [465, 89, 24, 15], [520, 92, 25, 18]],
+    A2: [[330, 78, 18, 8], [335, 79, 18, 9], [345, 80, 19, 9], [355, 82, 19, 10], [365, 83, 20, 10], [410, 85, 20, 12]],
+    A3: [[205, 58, 20, 10], [215, 60, 22, 11], [225, 62, 24, 13], [240, 64, 26, 15], [255, 66, 28, 17], [300, 70, 30, 20]],
+    A4: [[495, 88, 24, 17], [505, 89, 25, 18], [515, 90, 25, 19], [530, 92, 26, 20], [545, 93, 27, 22], [610, 95, 28, 25]],
+    A5: [[195, 52, 14, 4], [200, 53, 14, 4], [205, 55, 15, 5], [210, 56, 15, 5], [215, 57, 15, 5], [250, 60, 15, 6]],
+  };
+
+  // Data koridor untuk satu bulan: nilai C1-C4 dari riwayat, sisanya (unit, transit, data harian) tetap.
+  function corridorsFor(monthKey, base = CORRIDORS) {
+    const m = MONTHS.findIndex(x => x.key === monthKey);
+    if (m < 0) return base;
+    return base.map(c => {
+      const h = HISTORY[c.code] && HISTORY[c.code][m];
+      return h ? { ...c, passengers: h[0], load: h[1], wait: h[2], complaints: h[3] } : c;
+    });
+  }
+
+  function history(weights, opts = {}) {
+    return MONTHS.map(mo => ({ ...mo, result: evaluate(corridorsFor(mo.key), weights, opts) }));
+  }
+
+  // Simulasi acak bobot: setiap bobot dikalikan faktor acak dalam rentang ±spread, lalu dinormalkan.
+  // Generator mulberry32 dengan seed tetap, sehingga hasilnya sama persis dengan analysis/saw.py.
+  function mulberry32(seed) {
+    let a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  function monteCarlo(corridors, weights, opts = {}) {
+    const runs = opts.runs || 1000, spread = opts.spread ?? 0.5, rnd = mulberry32(opts.seed ?? 2026);
+    const base = evaluate(corridors, weights, opts);
+    const order = base.ranked.map(r => r.code).join();
+    const stats = Object.fromEntries(base.rows.map(r => [r.code, { sameRank: 0, sameCategory: 0, ranks: [0, 0, 0, 0, 0, 0], min: 100, max: 0 }]));
+    let sameOrder = 0;
+    const total = weights.reduce((a, b) => a + b, 0) || 1;
+    for (let i = 0; i < runs; i++) {
+      const w = weights.map(x => (x / total) * (1 - spread + 2 * spread * rnd()));
+      const e = evaluate(corridors, w, opts);
+      if (e.ranked.map(r => r.code).join() === order) sameOrder++;
+      e.rows.forEach(r => {
+        const s = stats[r.code], b = base.rows.find(x => x.code === r.code);
+        if (r.rank === b.rank) s.sameRank++;
+        if (r.category === b.category) s.sameCategory++;
+        s.ranks[r.rank]++;
+        s.min = Math.min(s.min, r.score); s.max = Math.max(s.max, r.score);
+      });
+    }
+    return { runs, spread, sameOrder, stats, base };
+  }
+
+  const api = { CRITERIA, CATEGORIES, SETTINGS, CORRIDORS, SCENARIOS, MONTHS, HISTORY, round, defaultWeights, fleetPerKm, value,
+    category, nearBoundary, evaluate, allocate, impact, status, rescale, sensitivity, corridorsFor, history, mulberry32, monteCarlo };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.SAW = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

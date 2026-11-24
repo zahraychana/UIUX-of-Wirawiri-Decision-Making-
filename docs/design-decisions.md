@@ -1,6 +1,6 @@
 # Design decision log
 
-This log records the main decisions behind the WiraWiri interface and its decision model. Each entry has the context, the options considered, the choice, and the trade-off accepted. Report section numbers refer to [the report](../report/laporan-wirawiri-spk-saw.pdf).
+This log records the main decisions behind the WiraWiri interface and its decision model. Each entry has the context, the options considered, the choice, and the trade-off accepted. Report section numbers refer to [the report](../report/laporan-wirawiri.pdf).
 
 ---
 
